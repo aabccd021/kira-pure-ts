@@ -1,0 +1,157 @@
+{
+  "name": "kira-pure",
+  "version": "0.1.14",
+  "description": "Programming language wrapper for pure function",
+  "author": "aabccd021 <aabccd021@gmail.com>",
+  "repository": "git@github.com:aabccd021/kira-pure-ts.git",
+  "license": "MIT",
+  "files": [
+    "lib",
+    "es6"
+  ],
+  "main": "lib/index.js",
+  "module": "es6/index.js",
+  "exports": {
+    ".": {
+      "node": "./lib/index.js",
+      "default": "./es6/index.js"
+    }
+  },
+  "scripts": {
+    "build": "rm -rf lib && rm -rf es6 && tsc --build tsconfig.mjs.json && tsc --build tsconfig.cjs.json",
+    "lint": "eslint . --ext ts",
+    "test": "jest --coverage --verbose",
+    "please": "yarn tsc --noEmit && yarn lint --fix && yarn test ",
+    "release": "git pull origin main --no-edit && npm version patch && git push",
+    "pull-request": "git pull origin main --no-edit && npm version patch && git push && yarn open-cli https://github.com/aabccd021/kira-pure-ts/compare/main...$(git branch --show-current)"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@typescript-eslint/eslint-plugin": "^4.18.0",
+    "@typescript-eslint/parser": "^4.23.0",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-functional": "^3.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-no-null": "^1.0.2",
+    "eslint-plugin-only-warn": "^1.0.2",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-sort-keys-fix": "^1.1.1",
+    "eslint-plugin-typescript-sort-keys": "^1.7.0",
+    "eslint-plugin-unused-imports": "^1.0.1",
+    "jest": "^27.0.6",
+    "open-cli": "^7.0.0",
+    "prettier": "^2.2.1",
+    "ts-jest": "^27.0.4",
+    "ts-node": "^10.2.0",
+    "typescript": "^4.2.4"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/test/**/*.test.ts"
+    ]
+  },
+  "eslintConfig": {
+    "ignorePatterns": [
+      "lib/**",
+      "es6/**"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "functional",
+      "import",
+      "jest",
+      "no-null",
+      "only-warn",
+      "simple-import-sort",
+      "sort-keys-fix",
+      "typescript-sort-keys",
+      "unused-imports"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:functional/all",
+      "plugin:import/errors",
+      "plugin:import/typescript",
+      "plugin:import/warnings",
+      "plugin:jest/recommended",
+      "plugin:jest/style",
+      "plugin:prettier/recommended",
+      "plugin:typescript-sort-keys/recommended",
+      "prettier"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "test/**/*.ts"
+        ],
+        "rules": {
+          "no-null/no-null": "off",
+          "functional/prefer-readonly-type": "off"
+        }
+      }
+    ],
+    "rules": {
+      "no-unsafe-optional-chaining": "warn",
+      "no-use-before-define": "warn",
+      "no-else-return": "warn",
+      "no-useless-return": "warn",
+      "no-undef-init": "warn",
+      "no-useless-rename": "warn",
+      "object-shorthand": "warn",
+      "prefer-arrow-callback": "warn",
+      "prefer-destructuring": "warn",
+      "prefer-template": "warn",
+      "eqeqeq": "warn",
+      "max-len": [
+        "warn",
+        {
+          "code": 100,
+          "comments": 100,
+          "ignoreStrings": true,
+          "ignoreTemplateLiterals": true
+        }
+      ],
+      "curly": [
+        "warn",
+        "all"
+      ],
+      "@typescript-eslint/no-unused-vars": "off",
+      "unused-imports/no-unused-imports-ts": "warn",
+      "functional/no-expression-statement": "off",
+      "functional/functional-parameters": "off",
+      "functional/no-conditional-statement": "off",
+      "sort-keys-fix/sort-keys-fix": "warn",
+      "unused-imports/no-unused-vars": [
+        "warn",
+        {
+          "vars": "all",
+          "varsIgnorePattern": "^_",
+          "args": "after-used",
+          "argsIgnorePattern": "^_"
+        }
+      ],
+      "import/no-cycle": "warn",
+      "import/exports-last": "warn",
+      "import/first": "warn",
+      "import/no-named-default": "warn",
+      "import/no-useless-path-segments": "warn",
+      "no-null/no-null": "warn",
+      "simple-import-sort/exports": "warn",
+      "simple-import-sort/imports": "warn",
+      "prettier/prettier": [
+        "warn",
+        {
+          "singleQuote": true,
+          "printWidth": 100
+        }
+      ]
+    }
+  }
+}
