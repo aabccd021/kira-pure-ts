@@ -18,7 +18,7 @@
     }
   },
   "scripts": {
-    "build": "rm -rf lib && rm -rf es6 && tsc --build tsconfig.mjs.json && tsc --build tsconfig.cjs.json",
+    "build": "rm -rf lib && rm -rf es6 && tsc --build tsconfig.es6.json && tsc --build tsconfig.lib.json",
     "lint": "eslint . --ext ts",
     "test": "jest --coverage --verbose",
     "please": "yarn tsc --noEmit && yarn lint --fix && yarn test ",
@@ -137,7 +137,6 @@
           "argsIgnorePattern": "^_"
         }
       ],
-      "import/no-cycle": "warn",
       "import/exports-last": "warn",
       "import/first": "warn",
       "import/no-named-default": "warn",

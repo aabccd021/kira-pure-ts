@@ -2,7 +2,7 @@ import * as D from './dict';
 import * as E from './either';
 import { _ } from './function';
 import * as P from './tuple';
-import * as PE from './tuple-either';
+import * as PE from './tuple_either';
 import { Dict, Either } from './type';
 
 export function compact<L, R>(de: Dict<Either<L, NonNullable<R>>>): Either<L, Dict<R>> {

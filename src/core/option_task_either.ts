@@ -1,5 +1,5 @@
 import * as O from './option';
-import * as TE from './task-either';
+import * as TE from './task_either';
 import { Either, Option, Task } from './type';
 
 export type Fn<L, R, T> = (ote: Option<Task<Either<L, R>>>) => T;

@@ -1,8 +1,3 @@
-import { _ } from './function';
-import * as O from './option';
-import * as P from './tuple';
-import { Either, Left, Option, Right, Tuple2, Tuple3, Tuple4 } from './type';
-
 /**
  *
  */
@@ -83,12 +78,12 @@ export function getOrElse<L, R>(f: (l: L) => R): Fn<L, R, R> {
 /**
  *
  */
-export function toOption<L, R>(e: Either<L, NonNullable<R>>): Option<R> {
-  return _(e)
-    ._(map((r) => O.some(r)))
-    ._(getOrElse<L, Option<R>>(() => O.none))
-    ._v();
-}
+// export function toOption<L, R>(e: Either<L, NonNullable<R>>): Option<R> {
+//   return _(e)
+//     ._(map((r) => O.some(r)))
+//     ._(getOrElse<L, Option<R>>(() => O.none))
+//     ._v();
+// }
 
 /**
  *

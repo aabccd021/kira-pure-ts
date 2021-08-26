@@ -30,3 +30,29 @@ tuPle
 	Y
 	Z
 ```
+
+# Export Rename
+Don't rename export
+```ts
+export * as foo from './foo'
+```
+
+Do rename import 
+```ts
+import * as foo from './foo'
+export { foo }
+```
+
+# Directory Export
+Don't use directory export
+```
+index.js
+__init__.py
+```
+
+Do use file export
+```
+mod.js
+mod.py
+```
+

@@ -6,8 +6,8 @@ import { Either, Tuple2, Tuple3, Tuple4 } from './type';
 /**
  *
  */
-export function compact2<E, A, B>([a, r]: Tuple2<Either<E, A>, Either<E, B>>): Either<
-  E,
+export function compact2<L, A, B>([a, r]: Tuple2<Either<L, A>, Either<L, B>>): Either<
+  L,
   Tuple2<A, B>
 > {
   return _(a)
@@ -24,11 +24,11 @@ export function compact2<E, A, B>([a, r]: Tuple2<Either<E, A>, Either<E, B>>): E
 /**
  *
  */
-export function compact3<E, A, B, C>([a, ...r]: Tuple3<
-  Either<E, A>,
-  Either<E, B>,
-  Either<E, C>
->): Either<E, Tuple3<A, B, C>> {
+export function compact3<L, A, B, C>([a, ...r]: Tuple3<
+  Either<L, A>,
+  Either<L, B>,
+  Either<L, C>
+>): Either<L, Tuple3<A, B, C>> {
   return _(a)
     ._(
       E.chain((a) =>
@@ -44,12 +44,12 @@ export function compact3<E, A, B, C>([a, ...r]: Tuple3<
 /**
  *
  */
-export function compact4<E, A, B, C, D>([a, ...r]: Tuple4<
-  Either<E, A>,
-  Either<E, B>,
-  Either<E, C>,
-  Either<E, D>
->): Either<E, Tuple4<A, B, C, D>> {
+export function compact4<L, A, B, C, D>([a, ...r]: Tuple4<
+  Either<L, A>,
+  Either<L, B>,
+  Either<L, C>,
+  Either<L, D>
+>): Either<L, Tuple4<A, B, C, D>> {
   return _(a)
     ._(
       E.chain((a) =>
