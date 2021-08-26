@@ -1,11 +1,12 @@
 import { _ } from '..';
+import { _ as ArrEither } from './arr_either.g';
 import { A, E } from './mod';
 
-export type T<L, R> = A._<E._<L, R>>;
+export * from './arr_either.g';
 
-export type Fn<L, R, TRes> = (d: T<L, R>) => TRes;
+export type Type<L, R> = A._<E._<L, R>>;
 
-export function swap<L, R>(a: T<L, R>): E._<L, A._<R>> {
+export function swap<L, R>(a: ArrEither<L, R>): E._<L, A._<R>> {
   return _(a)
     ._(
       A.reduce(E.Right.asEitherFrom<L, A._<R>>([]), (acc, val) =>
@@ -13,7 +14,7 @@ export function swap<L, R>(a: T<L, R>): E._<L, A._<R>> {
           ._(
             E.chain((acc) =>
               _(val)
-                ._(E.map(A.fromAppended(acc)))
+                ._(E.matchRight(A.fromAppended(acc)))
                 ._v()
             )
           )

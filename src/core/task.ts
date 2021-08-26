@@ -1,4 +1,8 @@
-import { Task } from './type.g';
+import { _ as Task } from './task.g';
+
+export * from './task.g';
+
+export type Type<T> = () => Promise<T>;
 
 /**
  *

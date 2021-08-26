@@ -3,11 +3,12 @@ import * as AE from './arr_either';
 import * as AT from './arr_task';
 import * as D from './dict';
 import * as DE from './dict_either';
+import * as DictEntry from './dict_entry';
 import * as DO from './dict_option';
 import * as DT from './dict_task';
 import * as E from './either/mod';
 import * as I from './io';
-import * as O from './option';
+import * as O from './option/mod';
 import * as OE from './option_either';
 import * as OT from './option_task';
 import * as OTE from './option_task_either';
@@ -26,6 +27,7 @@ export {
   AT,
   D,
   DE,
+  DictEntry,
   DO,
   DT,
   E,
