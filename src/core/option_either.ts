@@ -1,7 +1,7 @@
 import * as E from './either';
 import { _ } from './function';
 import * as O from './option';
-import { Either, Option } from './type';
+import { Either, Option } from './type.g';
 
 export type Fn<L, R, T> = (oe: Option<Either<L, R>>) => T;
 

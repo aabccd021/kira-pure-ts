@@ -1,7 +1,7 @@
 import { _ } from './function';
 import * as O from './option';
 import * as P from './tuple';
-import { Option, Tuple2, Tuple3, Tuple4 } from './type';
+import { Option, Tuple2, Tuple3, Tuple4 } from './type.g';
 
 export function compact2<A, B>([a, ...rest]: Tuple2<Option<A>, Option<B>>): Option<Tuple2<A, B>> {
   return _(a)

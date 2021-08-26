@@ -1,6 +1,6 @@
 import * as O from './option';
 import * as P from './tuple';
-import { Option, Tuple2, Tuple3, Tuple4 } from './type';
+import { Option, Tuple2, Tuple3, Tuple4 } from './type.g';
 
 /**
  *

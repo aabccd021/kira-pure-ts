@@ -1,7 +1,7 @@
 import * as D from './dict';
 import { _ } from './function';
 import * as O from './option';
-import { Dict, Option } from './type';
+import { Dict, Option } from './type.g';
 
 export function compact<S>(d: Dict<Option<NonNullable<S>>>): Dict<S> {
   return _(d)

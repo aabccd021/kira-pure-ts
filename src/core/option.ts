@@ -1,5 +1,5 @@
 import { _ } from './function';
-import { None, Option, Some } from './type';
+import { None, Option, Some } from './type.g';
 
 /**
  *

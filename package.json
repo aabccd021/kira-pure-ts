@@ -127,6 +127,7 @@
       "functional/no-expression-statement": "off",
       "functional/functional-parameters": "off",
       "functional/no-conditional-statement": "off",
+      "functional/prefer-tacit": "off",
       "sort-keys-fix/sort-keys-fix": "warn",
       "unused-imports/no-unused-vars": [
         "warn",

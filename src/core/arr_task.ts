@@ -1,4 +1,4 @@
-import { Arr, Task } from './type';
+import { Arr, Task } from './type.g';
 
 /**
  *

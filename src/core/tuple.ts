@@ -1,4 +1,4 @@
-import { Tuple2, Tuple3, Tuple4 } from './type';
+import { Tuple2, Tuple3, Tuple4 } from './type.g';
 
 /**
  *

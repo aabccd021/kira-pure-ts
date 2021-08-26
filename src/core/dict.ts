@@ -1,7 +1,7 @@
 import { _, D, DE, E } from '.';
 import { FromUnknown, FromUnknownReport } from './from_unknown';
 import * as O from './option';
-import { Arr, Dict, DictEntry, Either, Option } from './type';
+import { Arr, Dict, DictEntry, Either, Option } from './type.g';
 
 /**
  *

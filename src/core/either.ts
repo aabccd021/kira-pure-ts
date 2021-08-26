@@ -38,25 +38,7 @@ export function match<L, R, T>(
   return (e) => (e._tag === 'Left' ? onLeft(e) : onRight(e));
 }
 
-/**
- *
- */
-export function map<L, R, RResult>(f: (a: R) => RResult): Fn<L, R, Either<L, RResult>> {
-  return match<L, R, Either<L, RResult>>(
-    (l) => l,
-    (x) => right(f(x.right))
-  );
-}
 
-/**
- *
- */
-export function mapLeft<L, R, LResult>(f: (l: L) => LResult): Fn<L, R, Either<LResult, R>> {
-  return match<L, R, Either<LResult, R>>(
-    (l) => ({ _tag: 'Left', errObj: l.errObj, left: f(l.left) }),
-    (r) => r
-  );
-}
 
 /**
  *
@@ -84,6 +66,26 @@ export function getOrElse<L, R>(f: (l: L) => R): Fn<L, R, R> {
 //     ._(getOrElse<L, Option<R>>(() => O.none))
 //     ._v();
 // }
+
+/**
+ *
+ */
+export function mapRight<L, R, RResult>(f: (a: R) => RResult): Fn<L, R, Either<L, RResult>> {
+  return match<L, R, Either<L, RResult>>(
+    (l) => l,
+    (x) => right(f(x.right))
+  );
+}
+
+/**
+ *
+ */
+export function mapLeft<L, R, LResult>(f: (l: L) => LResult): Fn<L, R, Either<LResult, R>> {
+  return match<L, R, Either<LResult, R>>(
+    (l) => ({ _tag: 'Left', errObj: l.errObj, left: f(l.left) }),
+    (r) => r
+  );
+}
 
 /**
  *

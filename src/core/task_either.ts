@@ -1,7 +1,7 @@
 import * as E from './either';
 import { _ } from './function';
 import * as T from './task';
-import { Either, Left, Right, Task } from './type';
+import { Either, Left, Right, Task } from './type.g';
 
 /**
  *

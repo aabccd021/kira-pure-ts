@@ -1,4 +1,4 @@
-import { Task } from './type';
+import { Task } from './type.g';
 
 /**
  *

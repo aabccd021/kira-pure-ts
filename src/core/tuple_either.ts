@@ -1,7 +1,7 @@
 import * as E from './either';
 import { _ } from './function';
 import * as P from './tuple';
-import { Either, Tuple2, Tuple3, Tuple4 } from './type';
+import { Either, Tuple2, Tuple3, Tuple4 } from './type.g';
 
 /**
  *
