@@ -28,6 +28,8 @@ export function map<T, TResult>(f: (t: T) => TResult): Fn<T, Task<TResult>> {
  * @param t
  * @returns
  */
-export function chain<T, TResult>(f: (t: T) => Task<TResult>): Fn<T, Task<TResult>> {
+export function chain<T, TResult>(
+  f: (t: T) => Task<TResult>
+): Fn<T, Task<TResult>> {
   return (t) => () => t().then((tr) => f(tr)());
 }

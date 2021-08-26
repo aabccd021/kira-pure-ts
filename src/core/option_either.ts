@@ -19,6 +19,8 @@ export function map<L, R, T>(f: (r: R) => T): Fn<L, R, Option<Either<L, T>>> {
  * @param oe
  * @returns
  */
-export function toOption<L, R>(oe: Option<Either<L, NonNullable<R>>>): Option<Option<R>> {
+export function toOption<L, R>(
+  oe: Option<Either<L, NonNullable<R>>>
+): Option<Option<R>> {
   return _(oe)._(O.map(E.toOption))._v();
 }

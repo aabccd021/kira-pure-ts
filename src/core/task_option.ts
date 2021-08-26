@@ -6,6 +6,8 @@ export function map<O, T>(f: (o: O) => NonNullable<T>): Fn<O, Task<Option<T>>> {
   return T.map(O.map(f));
 }
 
-export function chain<O, T>(f: (o: O) => Task<Option<T>>): Fn<O, Task<Option<T>>> {
+export function chain<O, T>(
+  f: (o: O) => Task<Option<T>>
+): Fn<O, Task<Option<T>>> {
   return T.chain(O.fold(() => T.task(O.none), f));
 }

@@ -1,5 +1,6 @@
-import * as Left from './left.g';
-import * as Right from './right.g';
+import { absurd } from '../../function';
+import * as Left from './left';
+import * as Right from './right';
 
 export { Left, Right };
 
@@ -20,13 +21,17 @@ export function map<L, R, TRes>(
   onLeft: (l: Left._<L>) => TRes,
   onRight: (r: Right._<R>) => TRes
 ): Fn<L, R, TRes> {
-  return (e) => (e._tag === 'Left' ? onLeft(e) : onRight(e));
+  return (e) =>
+    e._tag === 'Left' ? onLeft(e) : e._tag === 'Right' ? onRight(e) : absurd(e);
 }
 
 /**
  *
  */
-export function match<L, R, TRes>(onLeft: (e: L) => TRes, onRight: (a: R) => TRes): Fn<L, R, TRes> {
+export function match<L, R, TRes>(
+  onLeft: (e: L) => TRes,
+  onRight: (a: R) => TRes
+): Fn<L, R, TRes> {
   return map<L, R, TRes>(
     (l) => onLeft(l.left),
     (r) => onRight(r.right)

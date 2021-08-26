@@ -31,7 +31,9 @@ export type Fn<L, R, T> = (task: Task<Either<L, R>>) => T;
  * @param f
  * @returns
  */
-export function map<L, R, RResult>(f: (r: R) => RResult): Fn<L, R, Task<Either<L, RResult>>> {
+export function map<L, R, RResult>(
+  f: (r: R) => RResult
+): Fn<L, R, Task<Either<L, RResult>>> {
   return T.map(E.map(f));
 }
 
@@ -76,6 +78,8 @@ export function getOrElse<L, R>(f: (l: Left<L>) => R): Fn<L, R, Task<R>> {
  * @param f
  * @returns
  */
-export function mapLeft<L, R, LResult>(f: (l: L) => LResult): Fn<L, R, Task<Either<LResult, R>>> {
+export function mapLeft<L, R, LResult>(
+  f: (l: L) => LResult
+): Fn<L, R, Task<Either<LResult, R>>> {
   return T.map(E.mapLeft(f));
 }

@@ -3,7 +3,10 @@ import * as O from './option';
 import * as P from './tuple';
 import { Option, Tuple2, Tuple3, Tuple4 } from './type.g';
 
-export function compact2<A, B>([a, ...rest]: Tuple2<Option<A>, Option<B>>): Option<Tuple2<A, B>> {
+export function compact2<A, B>([a, ...rest]: Tuple2<
+  Option<A>,
+  Option<B>
+>): Option<Tuple2<A, B>> {
   return _(a)
     ._(
       O.chain((prev) =>
@@ -15,9 +18,11 @@ export function compact2<A, B>([a, ...rest]: Tuple2<Option<A>, Option<B>>): Opti
     ._v();
 }
 
-export function compact3<A, B, C>([a, ...rest]: Tuple3<Option<A>, Option<B>, Option<C>>): Option<
-  Tuple3<A, B, C>
-> {
+export function compact3<A, B, C>([a, ...rest]: Tuple3<
+  Option<A>,
+  Option<B>,
+  Option<C>
+>): Option<Tuple3<A, B, C>> {
   return _(a)
     ._(
       O.chain((prev) =>

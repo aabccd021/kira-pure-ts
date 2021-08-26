@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import { _, D, Dict, Either, O, Option, T, Task, TaskEither } from 'kira-pure';
 
-import * as A from './arr';
 // eslint-disable-next-line import/no-cycle
 import { DT, OT, TO } from '../mod';
+import * as A from './arr';
 
 export type Dir = {
   readonly _type: 'directory';
@@ -62,7 +62,9 @@ export function readDir(path: string): Task<Option<Dict<DirEntType>>> {
         _(entities)
           ._(
             A.map((ent) =>
-              _<DirEntType>(ent.isDirectory() ? 'directory' : ent.isFile() ? 'file' : 'etc')
+              _<DirEntType>(
+                ent.isDirectory() ? 'directory' : ent.isFile() ? 'file' : 'etc'
+              )
                 ._(D.createEntry(ent.name))
                 ._v()
             )

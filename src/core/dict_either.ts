@@ -5,7 +5,9 @@ import * as P from './tuple';
 import * as PE from './tuple_either';
 import { Dict, Either } from './type.g';
 
-export function compact<L, R>(de: Dict<Either<L, NonNullable<R>>>): Either<L, Dict<R>> {
+export function compact<L, R>(
+  de: Dict<Either<L, NonNullable<R>>>
+): Either<L, Dict<R>> {
   return _(de)
     ._(
       D.reduce(E.rightE<L, Dict<R>>({}), (acc, eVal, key) =>

@@ -112,7 +112,7 @@
       "max-len": [
         "warn",
         {
-          "code": 100,
+          "code": 80,
           "comments": 100,
           "ignoreStrings": true,
           "ignoreTemplateLiterals": true
@@ -149,7 +149,7 @@
         "warn",
         {
           "singleQuote": true,
-          "printWidth": 100
+          "printWidth": 80
         }
       ]
     }

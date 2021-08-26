@@ -6,10 +6,10 @@ import { Either, Tuple2, Tuple3, Tuple4 } from './type.g';
 /**
  *
  */
-export function compact2<L, A, B>([a, r]: Tuple2<Either<L, A>, Either<L, B>>): Either<
-  L,
-  Tuple2<A, B>
-> {
+export function compact2<L, A, B>([a, r]: Tuple2<
+  Either<L, A>,
+  Either<L, B>
+>): Either<L, Tuple2<A, B>> {
   return _(a)
     ._(
       E.chain((a) =>

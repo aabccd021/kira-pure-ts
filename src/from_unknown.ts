@@ -6,9 +6,14 @@ export type FromUnknownReport = {
   readonly value: unknown;
 };
 
-export type FromUnknown<T> = (value: unknown, trace: string) => Either<FromUnknownReport, T>;
+export type FromUnknown<T> = (
+  value: unknown,
+  trace: string
+) => Either<FromUnknownReport, T>;
 
-export function addTrace(trace: string): (r: FromUnknownReport) => FromUnknownReport {
+export function addTrace(
+  trace: string
+): (r: FromUnknownReport) => FromUnknownReport {
   return (r) => ({
     ...r,
     trace: [trace, ...r.trace],
