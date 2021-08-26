@@ -5,7 +5,7 @@ import * as D from './dict';
 import * as DE from './dict_either';
 import * as DO from './dict_option';
 import * as DT from './dict_task';
-import * as E from './either';
+import * as E from './either/either';
 import * as I from './io';
 import * as O from './option';
 import * as OE from './option_either';

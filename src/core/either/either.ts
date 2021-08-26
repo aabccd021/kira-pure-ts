@@ -1,12 +1,13 @@
 import { _ } from '../..';
-import { EitherT } from '../type.g';
-import { Fn, map, Right } from './mod.g';
+import { _ as Either, Fn, map, Right } from './either.g';
+
+export * from './either.g';
 
 /**
  *
  */
-export function mapRight<L, R, RResult>(f: (a: R) => RResult): Fn<L, R, EitherT<L, RResult>> {
-  return map<L, R, EitherT<L, RResult>>(
+export function mapRight<L, R, RResult>(f: (a: R) => RResult): Fn<L, R, Either<L, RResult>> {
+  return map<L, R, Either<L, RResult>>(
     (l) => l,
     (x) => Right.from(f(x.right))
   );
@@ -15,8 +16,8 @@ export function mapRight<L, R, RResult>(f: (a: R) => RResult): Fn<L, R, EitherT<
 /**
  *
  */
-export function mapLeft<L, R, LResult>(f: (l: L) => LResult): Fn<L, R, EitherT<LResult, R>> {
-  return map<L, R, EitherT<LResult, R>>(
+export function mapLeft<L, R, LResult>(f: (l: L) => LResult): Fn<L, R, Either<LResult, R>> {
+  return map<L, R, Either<LResult, R>>(
     (l) => ({ _tag: 'Left', errObj: l.errObj, left: f(l.left) }),
     (r) => r
   );
@@ -26,8 +27,8 @@ export function mapLeft<L, R, LResult>(f: (l: L) => LResult): Fn<L, R, EitherT<L
  *
  */
 export function chain<L, R, RResult>(
-  f: (r: R) => EitherT<L, RResult>
-): Fn<L, R, EitherT<L, RResult>> {
+  f: (r: R) => Either<L, RResult>
+): Fn<L, R, Either<L, RResult>> {
   return (e) =>
     _(e)
       ._(mapRight(f))

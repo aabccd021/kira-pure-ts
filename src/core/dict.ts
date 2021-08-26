@@ -1,7 +1,7 @@
 import { _, D, DE, E } from '.';
 import { FromUnknown, FromUnknownReport } from './from_unknown';
 import * as O from './option';
-import { Arr, Dict, DictEntry, Either, Option } from './type.g';
+import { ArrT, Dict, DictEntry, Either, Option } from './type.g';
 
 /**
  *
@@ -83,7 +83,7 @@ export function everyValue<D>(f: (dEl: D) => boolean): Fn<D, boolean> {
   return (d) => Object.values(d).every(f);
 }
 
-export function values<D>(d: Dict<D>): Arr<D> {
+export function values<D>(d: Dict<D>): ArrT<D> {
   return Object.values(d);
 }
 

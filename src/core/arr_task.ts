@@ -1,15 +1,15 @@
-import { Arr, Task } from './type.g';
+import { ArrT, Task } from './type.g';
 
 /**
  *
  */
-export type Fn<T, TResult> = (tasks: Arr<Task<T>>) => TResult;
+export type Fn<T, TResult> = (tasks: ArrT<Task<T>>) => TResult;
 
 /**
  *
  * @param tasks
  * @returns
  */
-export function parallel<T>(tasks: Arr<Task<T>>): Task<Arr<T>> {
+export function parallel<T>(tasks: ArrT<Task<T>>): Task<ArrT<T>> {
   return () => Promise.all(tasks.map((task) => task()));
 }
