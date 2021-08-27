@@ -1,5 +1,5 @@
 export * from './some.g';
 
-export type Type<S> = {
+export type _<S> = {
   readonly value: NonNullable<S>;
 };

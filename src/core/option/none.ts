@@ -1,4 +1,4 @@
 export * from './none.g';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export type Type = {};
+export type _ = {};

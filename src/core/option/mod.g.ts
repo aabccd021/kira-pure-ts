@@ -1,10 +1,16 @@
 import { absurd } from '../../function';
 import * as None from './none';
-import { NoneT } from './none';
 import * as Some from './some';
-import { SomeT } from './some';
 
 export { None, Some };
+
+export type SomeT<S> = Some._<S> & {
+  readonly _tag: 'Some';
+};
+
+export type NoneT = None._ & {
+  readonly _tag: 'None';
+};
 
 export type OptionT<S> = NoneT | SomeT<S>;
 

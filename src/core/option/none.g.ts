@@ -1,9 +1,9 @@
-import { Type } from './none';
-
-export type NoneT = Type & {
-  readonly _tag: 'None';
-};
+import { NoneT, OptionT } from './mod.g';
 
 export function from(): NoneT {
   return { _tag: 'None' };
+}
+
+export function asOptionFrom<S>(): OptionT<S> {
+  return from();
 }
