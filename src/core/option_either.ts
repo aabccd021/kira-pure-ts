@@ -1,26 +1,16 @@
-import * as E from './either';
-import { _ } from './function';
-import * as O from './option';
-import { Either, Option } from './type.g';
+import { E, Either, O, Option } from './mod';
 
-export type Fn<L, R, T> = (oe: Option<Either<L, R>>) => T;
+export type OptionEitherT<L, R> = Option<Either<L, R>>;
+
+export type Fn<L, R, T> = (oe: OptionEitherT<L, R>) => T;
 
 /**
  *
  * @param f
  * @returns
  */
-export function map<L, R, T>(f: (r: R) => T): Fn<L, R, Option<Either<L, T>>> {
-  return O.map(E.map(f));
-}
-
-/**
- *
- * @param oe
- * @returns
- */
-export function toOption<L, R>(
-  oe: Option<Either<L, NonNullable<R>>>
-): Option<Option<R>> {
-  return _(oe)._(O.map(E.toOption))._v();
+export function mapRight<L, R, T>(
+  f: (r: R) => T
+): Fn<L, R, OptionEitherT<L, T>> {
+  return O.match(E.mapRight(f));
 }

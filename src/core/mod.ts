@@ -6,6 +6,7 @@ export type {
   IOT as IO,
   OptionT as Option,
   TaskT as Task,
+  TaskEitherT as TaskEither,
   Tuple2T as Tuple2,
   Tuple3T as Tuple3,
   Tuple4T as Tuple4,
@@ -21,4 +22,5 @@ export {
   Tuple3 as P3,
   Tuple4 as P4,
   Task as T,
+  TaskEither as TE,
 } from './mod.g';

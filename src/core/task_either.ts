@@ -1,40 +1,38 @@
-import * as E from './either';
-import { _ } from './function';
-import * as T from './task';
-import { Either, Left, Right, Task } from './type.g';
+import { _ } from '../function';
+import { E, Either, T, Task } from './mod';
 
-/**
- *
- * @param r
- * @returns
- */
-export function right<R>(r: R): Task<Right<R>> {
-  return T.task(E.right(r));
+export type TaskEitherT<L, R> = Task<Either<L, R>>;
+
+export function rightFrom<R>(r: R): Task<E.RightT<R>> {
+  return T.task(E.Right.from(r));
+}
+
+export function rightAsEitherFrom<L, R>(r: R): TaskEitherT<L, R> {
+  return T.task(E.Right.asEitherFrom(r));
+}
+
+export function leftFrom<R>(r: R): Task<E.LeftT<R>> {
+  return T.task(E.Left.from(r));
+}
+
+export function leftAsEitherFrom<L, R>(l: L): TaskEitherT<L, R> {
+  return T.task(E.Left.asEitherFrom(l));
 }
 
 /**
  *
- * @param l
- * @returns
  */
-export function left<L>(l: L): Task<Left<L>> {
-  return T.task(E.left(l));
-}
-
-/**
- *
- */
-export type Fn<L, R, T> = (task: Task<Either<L, R>>) => T;
+export type Fn<L, R, T> = (task: TaskEitherT<L, R>) => T;
 
 /**
  *
  * @param f
  * @returns
  */
-export function map<L, R, RResult>(
+export function mapRight<L, R, RResult>(
   f: (r: R) => RResult
-): Fn<L, R, Task<Either<L, RResult>>> {
-  return T.match(E.map(f));
+): Fn<L, R, TaskEitherT<L, RResult>> {
+  return T.match(E.mapRight(f));
 }
 
 /**
@@ -43,9 +41,9 @@ export function map<L, R, RResult>(
  * @returns
  */
 export function chain<L, R, RResult>(
-  f: (r: R) => Task<Either<L, RResult>>
-): Fn<L, R, Task<Either<L, RResult>>> {
-  return T.chain(E.match(T.task, (r) => f(r.right)));
+  f: (r: R) => TaskEitherT<L, RResult>
+): Fn<L, R, TaskEitherT<L, RResult>> {
+  return T.chain(E.map(T.task, (r) => f(r.right)));
 }
 
 /**
@@ -54,12 +52,12 @@ export function chain<L, R, RResult>(
  * @returns
  */
 export function chainFirst<L, R>(
-  f: (r: R) => Task<Either<L, unknown>>
-): Fn<L, R, Task<Either<L, R>>> {
+  f: (r: R) => TaskEitherT<L, unknown>
+): Fn<L, R, TaskEitherT<L, R>> {
   return chain((first) =>
     _(first)
       ._(f)
-      ._(map(() => first))
+      ._(mapRight(() => first))
       ._v()
   );
 }
@@ -69,8 +67,8 @@ export function chainFirst<L, R>(
  * @param f
  * @returns
  */
-export function getOrElse<L, R>(f: (l: Left<L>) => R): Fn<L, R, Task<R>> {
-  return T.match(E.match(f, (r) => r.right));
+export function getOrElse<L, R>(f: (l: E.LeftT<L>) => R): Fn<L, R, Task<R>> {
+  return T.match(E.map(f, (r) => r.right));
 }
 
 /**
@@ -80,6 +78,6 @@ export function getOrElse<L, R>(f: (l: Left<L>) => R): Fn<L, R, Task<R>> {
  */
 export function mapLeft<L, R, LResult>(
   f: (l: L) => LResult
-): Fn<L, R, Task<Either<LResult, R>>> {
+): Fn<L, R, TaskEitherT<LResult, R>> {
   return T.match(E.mapLeft(f));
 }

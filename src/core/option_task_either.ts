@@ -1,6 +1,7 @@
-import * as O from './option';
-import * as TE from './task_either';
-import { Either, Option, Task } from './type.g';
+import { TE } from '..';
+import { Either, O, Option, Task, TaskEither } from './mod';
+
+export type OptionTaskEitherT<L, R> = Option<TaskEither<L, R>>;
 
 export type Fn<L, R, T> = (ote: Option<Task<Either<L, R>>>) => T;
 
