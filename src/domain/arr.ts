@@ -7,12 +7,12 @@ export function fromAppended<A>(arr: ArrT<A>): (newEl: A) => ArrT<A> {
   return (newEl) => [...arr, newEl];
 }
 
-export type Fn<A, TRes> = (d: ArrT<A>) => TRes;
+export type Fn<A, TResult> = (d: ArrT<A>) => TResult;
 
-export function reduce<A, TRes>(
-  initialAcc: TRes,
-  reducer: (acc: TRes, val: A, idx: number) => TRes
-): Fn<A, TRes> {
+export function reduce<A, TResult>(
+  initialAcc: TResult,
+  reducer: (acc: TResult, val: A, idx: number) => TResult
+): Fn<A, TResult> {
   return (arr) => arr.reduce(reducer, initialAcc);
 }
 
@@ -20,7 +20,7 @@ export function append<A>(newEl: A): Fn<A, ArrT<A>> {
   return (arr) => [...arr, newEl];
 }
 
-export function map<A, TRes>(f: (a: A) => TRes): Fn<A, ArrT<TRes>> {
+export function map<A, TResult>(f: (a: A) => TResult): Fn<A, ArrT<TResult>> {
   return (arr) => arr.map(f);
 }
 

@@ -55,10 +55,10 @@ export function swapOption<A, B, C, D>([a, ...rest]: Tuple4T<
     ._v();
 }
 
-export type Fn<A, B, C, D, TRes> = (p: Tuple4T<A, B, C, D>) => TRes;
+export type Fn<A, B, C, D, TResult> = (p: Tuple4T<A, B, C, D>) => TResult;
 
-export function match<A, B, C, D, TRes>(
-  f: (a: A, b: B, c: C, d: D) => TRes
-): Fn<A, B, C, D, TRes> {
+export function match<A, B, C, D, TResult>(
+  f: (a: A, b: B, c: C, d: D) => TResult
+): Fn<A, B, C, D, TResult> {
   return (tuple) => f(...tuple);
 }

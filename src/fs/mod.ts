@@ -16,11 +16,7 @@ import {
 import { _ } from '../function';
 
 // eslint-disable-next-line import/no-cycle
-export type Dir = {
-  readonly _type: 'directory';
-  // eslint-disable-next-line no-use-before-define
-  readonly child: Option<Dict<DirEnt>>;
-};
+
 
 // eslint-disable-next-line no-use-before-define
 export function dirFrom(child: Option<Dict<DirEnt>>): Dir {

@@ -45,8 +45,8 @@ export function swapOption<A, B>([a, ...rest]: Tuple2T<
     ._v();
 }
 
-export type Fn<A, B, TRes> = (p: Tuple2T<A, B>) => TRes;
+export type Fn<A, B, TResult> = (p: Tuple2T<A, B>) => TResult;
 
-export function match<A, B, TRes>(f: (a: A, b: B) => TRes): Fn<A, B, TRes> {
+export function match<A, B, TResult>(f: (a: A, b: B) => TResult): Fn<A, B, TResult> {
   return (tuple) => f(...tuple);
 }

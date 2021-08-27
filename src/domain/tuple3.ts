@@ -53,10 +53,10 @@ export function swapOption<A, B, C>([a, ...rest]: Tuple3T<
     ._v();
 }
 
-export type Fn<A, B, C, TRes> = (p: Tuple3T<A, B, C>) => TRes;
+export type Fn<A, B, C, TResult> = (p: Tuple3T<A, B, C>) => TResult;
 
-export function match<A, B, C, TRes>(
-  f: (a: A, b: B, c: C) => TRes
-): Fn<A, B, C, TRes> {
+export function match<A, B, C, TResult>(
+  f: (a: A, b: B, c: C) => TResult
+): Fn<A, B, C, TResult> {
   return (tuple) => f(...tuple);
 }
