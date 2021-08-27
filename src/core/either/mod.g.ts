@@ -1,5 +1,6 @@
 import { absurd } from '../../function';
 import * as Left from './left';
+import { _ } from './mod';
 import * as Right from './right';
 
 export { Left, Right };
@@ -12,7 +13,7 @@ export type RightT<R> = Right._<R> & {
   readonly _tag: 'Right';
 };
 
-export type EitherT<L, R> = LeftT<L> | RightT<R>;
+export type EitherT<L, R> = _ & (LeftT<L> | RightT<R>);
 
 export type Fn<L, R, TRes> = (e: EitherT<L, R>) => TRes;
 

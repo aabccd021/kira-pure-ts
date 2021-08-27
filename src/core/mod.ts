@@ -1,10 +1,19 @@
-import {
-  Arr as A,
-  ArrT,
-  Either as E,
-  EitherT,
-  Tuple2 as P2,
-  Tuple2T,
+export type {
+  ArrT as Arr,
+  ArrEitherT as ArrEither,
+  ArrTaskT as ArrTask,
+  DictEntryT as DictEntry,
+  EitherT as Either,
+  OptionT as Option,
+  TaskT as Task,
+  Tuple2T as Tuple2,
 } from './mod.g';
-
-export { A, ArrT, E, EitherT, P2, Tuple2T };
+export {
+  Arr as A,
+  ArrEither as AE,
+  ArrTask as AT,
+  Either as E,
+  Option as O,
+  Tuple2 as P2,
+  Task as T,
+} from './mod.g';

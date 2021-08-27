@@ -1,29 +1,25 @@
-import { _ as Task } from './task.g';
-
-export * from './task.g';
-
-export type Type<T> = () => Promise<T>;
+export type TaskT<T> = () => Promise<T>;
 
 /**
  *
  * @param t
  * @returns
  */
-export function task<T>(t: T): Task<T> {
+export function task<T>(t: T): TaskT<T> {
   return () => Promise.resolve(t);
 }
 
 /**
  *
  */
-export type Fn<T, TResult> = (t: Task<T>) => TResult;
+export type Fn<T, TResult> = (t: TaskT<T>) => TResult;
 
 /**
  *
  * @param f
  * @returns
  */
-export function map<T, TResult>(f: (t: T) => TResult): Fn<T, Task<TResult>> {
+export function map<T, TResult>(f: (t: T) => TResult): Fn<T, TaskT<TResult>> {
   return (t) => () => t().then(f);
 }
 
@@ -33,7 +29,7 @@ export function map<T, TResult>(f: (t: T) => TResult): Fn<T, Task<TResult>> {
  * @returns
  */
 export function chain<T, TResult>(
-  f: (t: T) => Task<TResult>
-): Fn<T, Task<TResult>> {
+  f: (t: T) => TaskT<TResult>
+): Fn<T, TaskT<TResult>> {
   return (t) => () => t().then((tr) => f(tr)());
 }

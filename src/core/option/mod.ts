@@ -3,6 +3,8 @@ import { Fn, map, match, None, OptionT, Some } from './mod.g';
 
 export * from './mod.g';
 
+export type _ = { readonly _tag: string };
+
 export function fromNullable<S>(
   s: NonNullable<S> | null | undefined
 ): OptionT<S> {

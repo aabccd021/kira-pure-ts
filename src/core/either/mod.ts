@@ -1,8 +1,10 @@
 import { _ } from '../..';
-import { P2, Tuple2T } from '../mod';
+import { P2, Tuple2 } from '../mod';
 import { EitherT, Fn, map, Right } from './mod.g';
 
 export * from './mod.g';
+
+export type _ = { readonly _tag: string };
 
 export function mapRight<L, R, RResult>(
   f: (a: R) => RResult
@@ -39,7 +41,7 @@ export function chain<L, R, RResult>(
 
 export function map2<L, A, B, T>(
   f: (a: A, b: B) => T
-): Fn<L, Tuple2T<A, B>, EitherT<L, T>> {
+): Fn<L, Tuple2<A, B>, EitherT<L, T>> {
   return mapRight(P2.map(f));
 }
 

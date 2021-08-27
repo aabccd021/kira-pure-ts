@@ -1,12 +1,12 @@
 import { _ } from '..';
-import { A, ArrT, E, EitherT } from './mod';
+import { A, Arr, E, Either } from './mod';
 
-export type ArrEitherT<L, R> = ArrT<EitherT<L, R>>;
+export type ArrEitherT<L, R> = Arr<Either<L, R>>;
 
-export function swap<L, R>(a: ArrEitherT<L, R>): EitherT<L, ArrT<R>> {
+export function swap<L, R>(a: ArrEitherT<L, R>): Either<L, Arr<R>> {
   return _(a)
     ._(
-      A.reduce(E.Right.asEitherFrom<L, ArrT<R>>([]), (acc, val) =>
+      A.reduce(E.Right.asEitherFrom<L, Arr<R>>([]), (acc, val) =>
         _(acc)
           ._(
             E.chain((acc) =>

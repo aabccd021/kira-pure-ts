@@ -1,4 +1,5 @@
 import { absurd } from '../../function';
+import { _ } from './mod';
 import * as None from './none';
 import * as Some from './some';
 
@@ -12,7 +13,7 @@ export type NoneT = None._ & {
   readonly _tag: 'None';
 };
 
-export type OptionT<S> = NoneT | SomeT<S>;
+export type OptionT<S> = _ & (NoneT | SomeT<S>);
 
 export type Fn<S, T> = (e: OptionT<S>) => T;
 

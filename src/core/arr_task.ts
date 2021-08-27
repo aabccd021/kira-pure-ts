@@ -1,15 +1,12 @@
-import { _ as ArrTask } from './arr_task.g';
-import { A, T } from './mod';
+import { Arr, Task } from './mod';
 
-export * from './arr_task.g';
-
-export type Type<U> = A.ArrT<T._<U>>;
+export type ArrTaskT<U> = Arr<Task<U>>;
 
 /**
  *
  * @param tasks
  * @returns
  */
-export function swap<T>(tasks: ArrTask<T>): T._<A.ArrT<T>> {
+export function swap<T>(tasks: ArrTaskT<T>): Task<Arr<T>> {
   return () => Promise.all(tasks.map((task) => task()));
 }

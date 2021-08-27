@@ -1,6 +1,6 @@
-import { Type } from './dict_entry';
+import { DictEntryT } from './dict_entry';
 
-export type _<D> = Type<D>;
+export type _<D> = DictEntryT<D>;
 
 export function from<D>({
   key,
