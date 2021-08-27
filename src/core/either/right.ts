@@ -1,5 +1,5 @@
 export * from './right.g';
 
-export type Type<R> = {
+export type _<R> = {
   readonly right: R;
 };

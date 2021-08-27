@@ -12,7 +12,7 @@ export function fromPrepended<A, B>(f: (b: B) => A): (t: B) => Tuple2T<A, B> {
   return (b) => from(f(b), b);
 }
 
-export function match<A, B, C>(
+export function map<A, B, C>(
   f: (a: A, b: B) => C
 ): (tuple: Tuple2T<A, B>) => C {
   return (tuple) => f(...tuple);

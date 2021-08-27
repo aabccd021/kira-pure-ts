@@ -1,10 +1,16 @@
 import { absurd } from '../../function';
 import * as Left from './left';
-import { LeftT } from './left';
 import * as Right from './right';
-import { RightT } from './right';
 
-export { Left, LeftT, Right, RightT };
+export { Left, Right };
+
+export type LeftT<R> = Left._<R> & {
+  readonly _tag: 'Left';
+};
+
+export type RightT<R> = Right._<R> & {
+  readonly _tag: 'Right';
+};
 
 export type EitherT<L, R> = LeftT<L> | RightT<R>;
 

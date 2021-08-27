@@ -11,7 +11,7 @@ export function swap<L, R>(a: ArrEitherT<L, R>): EitherT<L, ArrT<R>> {
           ._(
             E.chain((acc) =>
               _(val)
-                ._(E.matchRight(A.fromAppended(acc)))
+                ._(E.mapRight(A.fromAppended(acc)))
                 ._v()
             )
           )

@@ -1,4 +1,4 @@
-import { LeftT } from './left.g';
+import { LeftT } from './mod';
 
 export * from './left.g';
 

@@ -4,7 +4,7 @@ import { EitherT, Fn, map, Right } from './mod.g';
 
 export * from './mod.g';
 
-export function matchRight<L, R, RResult>(
+export function mapRight<L, R, RResult>(
   f: (a: R) => RResult
 ): Fn<L, R, EitherT<L, RResult>> {
   return map(
@@ -13,7 +13,7 @@ export function matchRight<L, R, RResult>(
   );
 }
 
-export function matchLeft<L, R, LResult>(
+export function mapLeft<L, R, LResult>(
   f: (l: L) => LResult
 ): Fn<L, R, EitherT<LResult, R>> {
   return map<L, R, EitherT<LResult, R>>(
@@ -27,7 +27,7 @@ export function chain<L, R, RResult>(
 ): Fn<L, R, EitherT<L, RResult>> {
   return (e) =>
     _(e)
-      ._(matchRight(f))
+      ._(mapRight(f))
       ._(
         map(
           (l) => l,
@@ -40,7 +40,7 @@ export function chain<L, R, RResult>(
 export function map2<L, A, B, T>(
   f: (a: A, b: B) => T
 ): Fn<L, Tuple2T<A, B>, EitherT<L, T>> {
-  return matchRight(P2.match(f));
+  return mapRight(P2.map(f));
 }
 
 /**

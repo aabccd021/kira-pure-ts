@@ -1,10 +1,6 @@
-import { E } from '../mod';
-import { _, from } from './left';
+import { from } from './left';
+import { EitherT } from './mod.g';
 
-export type LeftT<R> = _<R> & {
-  readonly _tag: 'Left';
-};
-
-export function asEitherFrom<L>(left: L): E.EitherT<L, unknown> {
+export function asEitherFrom<L>(left: L): EitherT<L, unknown> {
   return from(left);
 }
