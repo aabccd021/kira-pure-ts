@@ -1,4 +1,4 @@
-import { _ } from '../function';
+import { _ } from '../ts/mod';
 import { E, Either, Task } from './mod';
 
 export type ArrT<A> = readonly A[];
@@ -45,4 +45,3 @@ export function swapEither<L, R>(a: ArrT<Either<L, R>>): Either<L, ArrT<R>> {
     )
     ._v();
 }
-

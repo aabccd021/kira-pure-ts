@@ -2,7 +2,7 @@ import { LeftT } from './mod';
 
 export * from './left.g';
 
-export type _<L> = {
+export type __<L> = {
   readonly errObj: Error;
   readonly left: L;
 };

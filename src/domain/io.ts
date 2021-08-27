@@ -1,4 +1,4 @@
-import { _ } from '../function';
+import { _ } from '../ts/mod';
 
 export type IOT<I> = () => I;
 

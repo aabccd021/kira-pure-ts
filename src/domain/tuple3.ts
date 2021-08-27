@@ -1,4 +1,4 @@
-import { _ } from '..';
+import { _ } from '../ts/mod';
 import { E, Either, O, Option, P2, Tuple2 } from './mod';
 
 export type Tuple3T<A, B, C> = readonly [A, B, C];

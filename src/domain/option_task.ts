@@ -1,4 +1,4 @@
-import { _ } from '..';
+import { _ } from '../ts/mod';
 import { O, Option, T, Task } from './mod';
 
 export type OptionTaskT<T> = Option<Task<T>>;

@@ -1,4 +1,4 @@
-import { _ } from '../function';
+import { _ } from '../ts/mod';
 import { E, Either, T, Task } from './mod';
 
 export type TaskEitherT<L, R> = Task<Either<L, R>>;

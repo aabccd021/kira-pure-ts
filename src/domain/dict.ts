@@ -1,4 +1,4 @@
-import { _ } from '..';
+import { _ } from '../ts/mod';
 import { A, Arr, DictEntryT, E, Either, O, Option, P2, T, Task } from './mod';
 import { DictEntry } from './mod.g';
 
@@ -101,7 +101,6 @@ export function swapTask<D>(dt: DictT<Task<NonNullable<D>>>): Task<DictT<D>> {
     ._(T.match(fromEntry))
     ._v();
 }
-
 
 // export function dictFromUnknownWith(
 //   trace: string

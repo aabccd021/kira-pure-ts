@@ -1,10 +1,10 @@
-import { _ } from '../..';
+import { _ } from '../../ts/mod';
 import { P2, Tuple2 } from '../mod';
 import { EitherT, Fn, map, Right } from './mod.g';
 
 export * from './mod.g';
 
-export type _ = { readonly _tag: string };
+export type __ = { readonly _tag: string };
 
 export function mapRight<L, R, RResult>(
   f: (a: R) => RResult
