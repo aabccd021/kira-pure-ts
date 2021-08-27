@@ -1,16 +1,16 @@
 import { _ } from '../..';
-import { _ as Option, Fn, map, match, None, Some } from './mod.g';
+import { Fn, map, match, None, OptionT, Some } from './mod.g';
 
 export * from './mod.g';
 
 export function fromNullable<S>(
   s: NonNullable<S> | null | undefined
-): Option<S> {
+): OptionT<S> {
   // eslint-disable-next-line no-null/no-null
   return s === null || s === undefined ? None.from() : Some.from(s);
 }
 
-export function chain<T, S>(f: (s: S) => Option<T>): Fn<S, Option<T>> {
+export function chain<T, S>(f: (s: S) => OptionT<T>): Fn<S, OptionT<T>> {
   return (o) =>
     _(o)
       ._(match(f))

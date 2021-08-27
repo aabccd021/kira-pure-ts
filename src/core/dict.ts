@@ -57,7 +57,7 @@ export function everyValue<D>(f: (dEl: D) => boolean): Fn<D, boolean> {
   return (d) => Object.values(d).every(f);
 }
 
-export function values<D>(d: Dict<D>): A._<D> {
+export function values<D>(d: Dict<D>): A.ArrT<D> {
   return Object.values(d);
 }
 

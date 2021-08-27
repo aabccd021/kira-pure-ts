@@ -1,9 +1,9 @@
 import { Type } from './none';
 
-export type _ = Type & {
+export type NoneT = Type & {
   readonly _tag: 'None';
 };
 
-export function from(): _ {
+export function from(): NoneT {
   return { _tag: 'None' };
 }

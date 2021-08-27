@@ -1,12 +1,12 @@
 import { _ } from '../..';
-import { E, P2 } from '../mod';
-import { _ as Either, Fn, map, Right } from './mod.g';
+import { P2, Tuple2T } from '../mod';
+import { EitherT, Fn, map, Right } from './mod.g';
 
 export * from './mod.g';
 
 export function matchRight<L, R, RResult>(
   f: (a: R) => RResult
-): Fn<L, R, Either<L, RResult>> {
+): Fn<L, R, EitherT<L, RResult>> {
   return map(
     (l) => l,
     (x) => Right.asEitherFrom(f(x.right))
@@ -15,16 +15,16 @@ export function matchRight<L, R, RResult>(
 
 export function matchLeft<L, R, LResult>(
   f: (l: L) => LResult
-): Fn<L, R, Either<LResult, R>> {
-  return map<L, R, Either<LResult, R>>(
+): Fn<L, R, EitherT<LResult, R>> {
+  return map<L, R, EitherT<LResult, R>>(
     (l) => ({ _tag: 'Left', errObj: l.errObj, left: f(l.left) }),
     (r) => r
   );
 }
 
 export function chain<L, R, RResult>(
-  f: (r: R) => Either<L, RResult>
-): Fn<L, R, Either<L, RResult>> {
+  f: (r: R) => EitherT<L, RResult>
+): Fn<L, R, EitherT<L, RResult>> {
   return (e) =>
     _(e)
       ._(matchRight(f))
@@ -39,7 +39,7 @@ export function chain<L, R, RResult>(
 
 export function map2<L, A, B, T>(
   f: (a: A, b: B) => T
-): Fn<L, P2._<A, B>, E._<L, T>> {
+): Fn<L, Tuple2T<A, B>, EitherT<L, T>> {
   return matchRight(P2.match(f));
 }
 
