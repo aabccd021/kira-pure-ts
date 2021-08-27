@@ -1,16 +1,14 @@
-import * as O from './option';
-import * as P from './tuple';
-import { Option, Tuple2, Tuple3, Tuple4 } from './type.g';
+import { O, Option, P2, P3, P4, Tuple2, Tuple3, Tuple4 } from './mod';
 
 /**
  *
  * @param f
  * @returns
  */
-export function map2<A, B, T>(
+export function match2<A, B, T>(
   f: (a: A, b: B) => NonNullable<T>
 ): (op: Option<Tuple2<A, NonNullable<B>>>) => Option<T> {
-  return O.map(P.map2(f));
+  return O.match(P2.match(f));
 }
 
 /**
@@ -18,10 +16,10 @@ export function map2<A, B, T>(
  * @param f
  * @returns
  */
-export function map3<A, B, C, T>(
+export function match3<A, B, C, T>(
   f: (a: A, b: B, c: C) => NonNullable<T>
 ): (op: Option<Tuple3<A, B, C>>) => Option<T> {
-  return O.map(P.map3(f));
+  return O.match(P3.match(f));
 }
 
 /**
@@ -29,8 +27,8 @@ export function map3<A, B, C, T>(
  * @param f
  * @returns
  */
-export function map4<A, B, C, D, T>(
+export function match4<A, B, C, D, T>(
   f: (a: A, b: B, c: C, d: D) => NonNullable<T>
 ): (op: Option<Tuple4<A, B, C, D>>) => Option<T> {
-  return O.map(P.map4(f));
+  return O.match(P4.match(f));
 }

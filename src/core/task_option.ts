@@ -1,13 +1,17 @@
-import { O, Option, T, Task } from 'kira-pure';
+import { O, Option, T, Task } from './mod';
 
-export type Fn<O, T> = (d: Task<Option<O>>) => T;
+export type TaskOptionT<O> = Task<Option<O>>;
 
-export function map<O, T>(f: (o: O) => NonNullable<T>): Fn<O, Task<Option<T>>> {
-  return T.map(O.map(f));
+export type Fn<O, T> = (d: TaskOptionT<O>) => T;
+
+export function match<O, T>(
+  f: (o: O) => NonNullable<T>
+): Fn<O, TaskOptionT<T>> {
+  return T.match(O.match(f));
 }
 
 export function chain<O, T>(
-  f: (o: O) => Task<Option<T>>
-): Fn<O, Task<Option<T>>> {
-  return T.chain(O.fold(() => T.task(O.none), f));
+  f: (o: O) => TaskOptionT<T>
+): Fn<O, TaskOptionT<T>> {
+  return T.chain(O.map(() => T.task(O.None.from()), f));
 }

@@ -1,5 +1,5 @@
 import { _ } from '..';
-import { E, Either, P2, Tuple2 } from './mod';
+import { E, Either, O, Option, P2, Tuple2 } from './mod';
 
 export type Tuple3T<A, B, C> = readonly [A, B, C];
 
@@ -30,6 +30,23 @@ export function swapEither<L, A, B, C>([a, ...r]: Tuple3T<
         _(P2.from(...r))
           ._(P2.swapEither)
           ._(E.mapRight((r) => from(a, ...r)))
+          ._v()
+      )
+    )
+    ._v();
+}
+
+export function swapOption<A, B, C>([a, ...rest]: Tuple3T<
+  Option<A>,
+  Option<B>,
+  Option<C>
+>): Option<Tuple3T<A, B, C>> {
+  return _(a)
+    ._(
+      O.chain((prev) =>
+        _(P2.from(...rest))
+          ._(P2.swapOption)
+          ._(O.match(fromPrepended(() => prev)))
           ._v()
       )
     )

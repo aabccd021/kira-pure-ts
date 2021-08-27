@@ -1,12 +1,10 @@
-import { _, O, Option, T, Task } from 'kira-pure';
+import { _ } from '..';
+import { O, Option, T, Task } from './mod';
 
-export function swap<T>(ot: Option<Task<NonNullable<T>>>): Task<Option<T>> {
+export type OptionTaskT<T> = Option<Task<T>>;
+
+export function swap<T>(ot: OptionTaskT<NonNullable<T>>): Task<Option<T>> {
   return _(ot)
-    ._(
-      O.fold(
-        () => T.task(O.none) as Task<Option<T>>,
-        (t) => _(t)._(T.map(O.some))._v()
-      )
-    )
+    ._(O.map(() => T.task(O.None.from()), T.match(O.Some.asOptionFrom)))
     ._v();
 }

@@ -25,10 +25,3 @@ export function map<S, T>(onNone: () => T, onSome: (s: S) => T): Fn<S, T> {
       ? onSome(o.value)
       : absurd(o);
 }
-
-export function match<S, T>(f: (s: S) => NonNullable<T>): Fn<S, OptionT<T>> {
-  return map<S, OptionT<T>>(
-    () => None.from(),
-    (s) => Some.from(f(s))
-  );
-}

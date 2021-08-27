@@ -1,5 +1,5 @@
 import { _ } from '..';
-import { E, Either } from './mod';
+import { E, Either, O, Option } from './mod';
 
 export type Tuple2T<A, B> = readonly [A, B];
 
@@ -24,6 +24,21 @@ export function swapEither<L, A, B>([a, r]: Tuple2T<
       E.chain((a) =>
         _(r)
           ._(E.mapRight((r) => from(a, r)))
+          ._v()
+      )
+    )
+    ._v();
+}
+
+export function swapOption<A, B>([a, ...rest]: Tuple2T<
+  Option<A>,
+  Option<B>
+>): Option<Tuple2T<A, B>> {
+  return _(a)
+    ._(
+      O.chain((prev) =>
+        _(...rest)
+          ._(O.match(fromPrepended(() => prev)))
           ._v()
       )
     )
