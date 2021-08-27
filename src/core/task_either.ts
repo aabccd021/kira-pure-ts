@@ -34,7 +34,7 @@ export type Fn<L, R, T> = (task: Task<Either<L, R>>) => T;
 export function map<L, R, RResult>(
   f: (r: R) => RResult
 ): Fn<L, R, Task<Either<L, RResult>>> {
-  return T.map(E.map(f));
+  return T.match(E.map(f));
 }
 
 /**
@@ -70,7 +70,7 @@ export function chainFirst<L, R>(
  * @returns
  */
 export function getOrElse<L, R>(f: (l: Left<L>) => R): Fn<L, R, Task<R>> {
-  return T.map(E.match(f, (r) => r.right));
+  return T.match(E.match(f, (r) => r.right));
 }
 
 /**
@@ -81,5 +81,5 @@ export function getOrElse<L, R>(f: (l: Left<L>) => R): Fn<L, R, Task<R>> {
 export function mapLeft<L, R, LResult>(
   f: (l: L) => LResult
 ): Fn<L, R, Task<Either<LResult, R>>> {
-  return T.map(E.mapLeft(f));
+  return T.match(E.mapLeft(f));
 }

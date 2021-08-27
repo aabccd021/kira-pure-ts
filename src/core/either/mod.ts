@@ -39,10 +39,10 @@ export function chain<L, R, RResult>(
       ._v();
 }
 
-export function map2<L, A, B, T>(
+export function match2<L, A, B, T>(
   f: (a: A, b: B) => T
 ): Fn<L, Tuple2<A, B>, EitherT<L, T>> {
-  return mapRight(P2.map(f));
+  return mapRight(P2.match(f));
 }
 
 /**

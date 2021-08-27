@@ -1,11 +1,13 @@
-import { Arr, DictEntry, O, Option } from './mod';
+import { _ } from '..';
+import { A, Arr, DictEntryT, E, Either, O, Option, P2, T, Task } from './mod';
+import { DictEntry } from './mod.g';
 
 // eslint-disable-next-line functional/prefer-type-literal
 export interface DictT<D> {
   readonly [index: string]: NonNullable<D>;
 }
 
-export function fromEntry<D>(entries: readonly DictEntry<D>[]): DictT<D> {
+export function fromEntry<D>(entries: readonly DictEntryT<D>[]): DictT<D> {
   return Object.fromEntries(entries.map(({ key, value }) => [key, value]));
 }
 
@@ -57,6 +59,49 @@ export function everyValue<D>(f: (dEl: D) => boolean): Fn<D, boolean> {
 export function values<D>(d: DictT<D>): Arr<D> {
   return Object.values(d);
 }
+
+export function compactOption<S>(d: DictT<Option<NonNullable<S>>>): DictT<S> {
+  return _(d)
+    ._(
+      reduce({}, (acc, oVal, key) =>
+        _(oVal)
+          ._(O.match((val) => ({ ...acc, [key]: val })))
+          ._(O.getOrElse(() => acc))
+          ._v()
+      )
+    )
+    ._v();
+}
+
+export function swapEither<L, R>(
+  de: DictT<Either<L, NonNullable<R>>>
+): Either<L, DictT<R>> {
+  return _(de)
+    ._(
+      reduce(E.Right.asEitherFrom<L, DictT<R>>({}), (acc, eVal, key) =>
+        _(P2.from(acc, eVal))
+          ._(P2.swapEither)
+          ._(E.match2((acc, val) => ({ ...acc, [key]: val })))
+          ._v()
+      )
+    )
+    ._v();
+}
+
+export function swapTask<D>(dt: DictT<Task<NonNullable<D>>>): Task<DictT<D>> {
+  return _(dt)
+    ._(
+      mapEntries((el, key) =>
+        _(el)
+          ._(T.match(DictEntry.fromValueWith(key)))
+          ._v()
+      )
+    )
+    ._(A.swapTask)
+    ._(T.match(fromEntry))
+    ._v();
+}
+
 
 // export function dictFromUnknownWith(
 //   trace: string

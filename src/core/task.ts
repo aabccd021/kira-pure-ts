@@ -19,7 +19,7 @@ export type Fn<T, TResult> = (t: TaskT<T>) => TResult;
  * @param f
  * @returns
  */
-export function map<T, TResult>(f: (t: T) => TResult): Fn<T, TaskT<TResult>> {
+export function match<T, TResult>(f: (t: T) => TResult): Fn<T, TaskT<TResult>> {
   return (t) => () => t().then(f);
 }
 

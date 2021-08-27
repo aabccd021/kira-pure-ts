@@ -32,6 +32,6 @@ export function swapEither<L, A, B>([a, r]: Tuple2T<
 
 export type Fn<A, B, TRes> = (p: Tuple2T<A, B>) => TRes;
 
-export function map<A, B, TRes>(f: (a: A, b: B) => TRes): Fn<A, B, TRes> {
+export function match<A, B, TRes>(f: (a: A, b: B) => TRes): Fn<A, B, TRes> {
   return (tuple) => f(...tuple);
 }
