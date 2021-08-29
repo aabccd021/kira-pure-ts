@@ -13,5 +13,5 @@ export function match<O, T>(
 export function chain<O, T>(
   f: (o: O) => TaskOptionT<T>
 ): Fn<O, TaskOptionT<T>> {
-  return T.chain(O.map(() => T.task(O.None.from()), f));
+  return T.chain(O.map(() => T.fromValue(O.None.from()), f));
 }

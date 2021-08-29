@@ -1,5 +1,4 @@
-import { Dict, Option } from '../../../domain/mod';
-import { absurd } from '../../../ts/absurd';
+import { absurd, Dict, Option } from '../../../mod';
 import * as Dir from './dir';
 import * as Etc from './etc';
 import * as File from './file';
@@ -22,17 +21,29 @@ export type DirEntT = FileT | DirT | EtcT;
 
 export type Fn<TResult> = (dirEnt: DirEntT) => TResult;
 
-export function m<TResult>(
-  onDir: (child: Option<Dict<DirEntT>>) => TResult,
-  onFile: (content: string) => TResult,
-  onEtc: () => TResult
+export function map<TResult>(
+  onDir: (dir: DirT) => TResult,
+  onEtc: (etc: EtcT) => TResult,
+  onFile: (file: FileT) => TResult
 ): Fn<TResult> {
   return (dirEnt) =>
     dirEnt._type === 'Dir'
-      ? onDir(dirEnt.child)
+      ? onDir(dirEnt)
       : dirEnt._type === 'Etc'
-      ? onEtc()
+      ? onEtc(dirEnt)
       : dirEnt._type === 'File'
-      ? onFile(dirEnt.content)
+      ? onFile(dirEnt)
       : absurd(dirEnt);
+}
+
+export function match<TResult>(
+  onDir: (child: Option<Dict<DirEntT>>) => TResult,
+  onEtc: () => TResult,
+  onFile: (content: string) => TResult
+): Fn<TResult> {
+  return map(
+    (dir) => onDir(dir.child),
+    onEtc,
+    (file) => onFile(file.content)
+  );
 }

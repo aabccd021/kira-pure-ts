@@ -1,3 +1,5 @@
+export * from './task.g';
+
 export type TaskT<T> = () => Promise<T>;
 
 /**
@@ -5,7 +7,7 @@ export type TaskT<T> = () => Promise<T>;
  * @param t
  * @returns
  */
-export function task<T>(t: T): TaskT<T> {
+export function fromValue<T>(t: T): TaskT<T> {
   return () => Promise.resolve(t);
 }
 

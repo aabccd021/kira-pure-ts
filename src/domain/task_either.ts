@@ -4,19 +4,19 @@ import { E, Either, T, Task } from './mod';
 export type TaskEitherT<L, R> = Task<Either<L, R>>;
 
 export function rightFrom<R>(r: R): Task<E.RightT<R>> {
-  return T.task(E.Right.from(r));
+  return T.fromValue(E.Right.from(r));
 }
 
 export function rightAsEitherFrom<L, R>(r: R): TaskEitherT<L, R> {
-  return T.task(E.Right.asEitherFrom(r));
+  return T.fromValue(E.Right.asEitherFrom(r));
 }
 
 export function leftFrom<R>(r: R): Task<E.LeftT<R>> {
-  return T.task(E.Left.from(r));
+  return T.fromValue(E.Left.from(r));
 }
 
 export function leftAsEitherFrom<L, R>(l: L): TaskEitherT<L, R> {
-  return T.task(E.Left.asEitherFrom(l));
+  return T.fromValue(E.Left.asEitherFrom(l));
 }
 
 /**
@@ -43,7 +43,7 @@ export function mapRight<L, R, RResult>(
 export function chain<L, R, RResult>(
   f: (r: R) => TaskEitherT<L, RResult>
 ): Fn<L, R, TaskEitherT<L, RResult>> {
-  return T.chain(E.map(T.task, (r) => f(r.right)));
+  return T.chain(E.map(T.fromValue, (r) => f(r.right)));
 }
 
 /**

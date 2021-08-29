@@ -10,13 +10,13 @@ export function from<D>({
   return { key, value };
 }
 
-export function fromKeyWith<D>(
+export function withValue<D>(
   value: NonNullable<D>
 ): (key: string) => DictEntryT<D> {
   return (key) => ({ key, value });
 }
 
-export function fromValueWith<D>(
+export function withKey<D>(
   key: string
 ): (value: NonNullable<D>) => DictEntryT<D> {
   return (value) => ({ key, value });

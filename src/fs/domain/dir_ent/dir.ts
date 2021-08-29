@@ -1,4 +1,4 @@
-import { Dict, Option } from '../../../domain/mod';
+import { Dict, Option } from '../../../mod';
 import { DirEntT } from './mod';
 
 export * from './dir.g';

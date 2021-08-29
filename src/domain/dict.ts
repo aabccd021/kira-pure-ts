@@ -93,7 +93,7 @@ export function swapTask<D>(dt: DictT<Task<NonNullable<D>>>): Task<DictT<D>> {
     ._(
       mapEntries((el, key) =>
         _(el)
-          ._(T.match(DictEntry.fromValueWith(key)))
+          ._(T.match(DictEntry.withKey(key)))
           ._v()
       )
     )
