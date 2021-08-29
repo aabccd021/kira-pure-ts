@@ -32,6 +32,6 @@ export function chain<T, S>(f: (s: S) => OptionT<T>): Fn<S, OptionT<T>> {
       ._v();
 }
 
-export function getOrElse<S>(f: () => S): Fn<S, S> {
+export function getSomeOrElse<S>(f: () => S): Fn<S, S> {
   return map(f, (s) => s);
 }

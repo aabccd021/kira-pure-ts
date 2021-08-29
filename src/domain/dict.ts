@@ -60,13 +60,13 @@ export function values<D>(d: DictT<D>): Arr<D> {
   return Object.values(d);
 }
 
-export function compactOption<S>(d: DictT<Option<NonNullable<S>>>): DictT<S> {
+export function filterNone<S>(d: DictT<Option<NonNullable<S>>>): DictT<S> {
   return _(d)
     ._(
       reduce({}, (acc, oVal, key) =>
         _(oVal)
           ._(O.match((val) => ({ ...acc, [key]: val })))
-          ._(O.getOrElse(() => acc))
+          ._(O.getSomeOrElse(() => acc))
           ._v()
       )
     )

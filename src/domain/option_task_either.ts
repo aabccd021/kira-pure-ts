@@ -10,7 +10,7 @@ export type Fn<L, R, T> = (ote: Option<Task<Either<L, R>>>) => T;
  * @returns
  */
 export function getOrLeft<L, R>(f: () => L): Fn<L, R, Task<Either<L, R>>> {
-  return O.getOrElse<Task<Either<L, R>>>(() => TE.leftFrom(f()));
+  return O.getSomeOrElse<Task<Either<L, R>>>(() => TE.leftFrom(f()));
 }
 
 /**
@@ -19,5 +19,5 @@ export function getOrLeft<L, R>(f: () => L): Fn<L, R, Task<Either<L, R>>> {
  * @returns
  */
 export function getOrRight<L, R>(f: () => R): Fn<L, R, Task<Either<L, R>>> {
-  return O.getOrElse<Task<Either<L, R>>>(() => TE.rightFrom(f()));
+  return O.getSomeOrElse<Task<Either<L, R>>>(() => TE.rightFrom(f()));
 }
