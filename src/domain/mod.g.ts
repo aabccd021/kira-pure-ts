@@ -7,6 +7,7 @@ import { OptionT } from './option/mod';
 import { OptionEitherT } from './option_either';
 import { OptionTaskT } from './option_task';
 import { OptionTaskEitherT } from './option_task_either';
+import { StrT } from './str';
 import { TaskT } from './task';
 import { TaskEitherT } from './task_either';
 import { TaskOptionT } from './task_option';
@@ -24,6 +25,7 @@ export * as OptionEither from './option_either';
 export * as OptionTask from './option_task';
 export * as OptionTaskEither from './option_task_either';
 export * as OptionTuple from './option_tuple';
+export * as Str from './str';
 export * as Task from './task';
 export * as TaskEither from './task_either';
 export * as TaskOption from './task_option';
@@ -41,6 +43,7 @@ export type {
   OptionT,
   OptionTaskEitherT,
   OptionTaskT,
+  StrT,
   TaskEitherT,
   TaskOptionT,
   TaskT,

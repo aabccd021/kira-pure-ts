@@ -1,34 +1,36 @@
-import { _, D, Dict, DirEnt, O, OT, T, Task, TaskOption } from '../mod';
-import { DirEntT, readDir } from './mod';
+import { _, D, Dict, O, Str, T, TaskOption, TO } from '../mod';
+import { DirEnt, DirEntT, readDir } from './mod';
+import { readFile } from './read_file';
 
 export function readDirRecursive(path: string): TaskOption<Dict<DirEntT>> {
   return _(path)
     ._(readDir)
     ._(
-      T.chain((d) =>
+      TO.chainTask((d) =>
         _(d)
           ._(
-            O.match((d) =>
-              _(d)
-                ._(
-                  D.mapValues((entType, name) =>
-                    _(`${path}/${name}`)
-                      ._<Task<DirEntT>>((path) =>
-                        entType === 'directory'
-                          ? _(path)
-                              ._(readDirRecursive)
-                              ._(T.match(DirEnt.Dir.from))
-                              ._v()
-                          : T.fromValue(DirEnt.Etc.from())
-                      )
-                      ._v()
-                  )
+            D.mapValues((entType, name) =>
+              _(path)
+                ._(Str.append('/'))
+                ._(Str.append(name))
+                ._((dirEntPath) =>
+                  entType === 'directory'
+                    ? _(dirEntPath)
+                        ._(readDirRecursive)
+                        ._(TO.match(DirEnt.Dir.asDirEntFrom))
+                        ._v()
+                    : entType === 'file'
+                    ? _(dirEntPath)
+                        ._(readFile)
+                        ._(TO.match(DirEnt.File.asDirEntFrom))
+                        ._v()
+                    : T.fromValue(O.Some.from(DirEnt.Etc.asDirEntFrom()))
                 )
-                ._(D.swapTask)
                 ._v()
             )
           )
-          ._(OT.swap)
+          ._(D.swapTask)
+          ._(T.match(D.compactOption))
           ._v()
       )
     )

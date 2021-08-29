@@ -1,4 +1,4 @@
-import { absurd, Dict, Option } from '../../../mod';
+import { absurd, Dict } from '../../../mod';
 import * as Dir from './dir';
 import * as Etc from './etc';
 import * as File from './file';
@@ -37,7 +37,7 @@ export function map<TResult>(
 }
 
 export function match<TResult>(
-  onDir: (child: Option<Dict<DirEntT>>) => TResult,
+  onDir: (child: Dict<DirEntT>) => TResult,
   onEtc: () => TResult,
   onFile: (content: string) => TResult
 ): Fn<TResult> {

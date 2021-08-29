@@ -28,6 +28,7 @@ export {
   Tuple2 as P2,
   Tuple3 as P3,
   Tuple4 as P4,
+  Str,
   Task as T,
   TaskEither as TE,
   TaskOption as TO,

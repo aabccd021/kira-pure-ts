@@ -10,3 +10,11 @@
 //     ? E.right(value)
 //     : E.left({ message: 'is not string', trace: [trace], value });
 // }
+
+export type StrT = string;
+
+export type Fn<T> = (s: string) => T;
+
+export function append(appendix: string): Fn<string> {
+  return (s) => s + appendix;
+}

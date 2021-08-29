@@ -2,6 +2,10 @@ import { _ } from '../ts/mod';
 
 export type IOT<I> = () => I;
 
+export function fromValue<I>(i: I): IOT<I> {
+  return () => i;
+}
+
 export function invoke<I>(i: IOT<I>): I {
   return i();
 }
@@ -25,8 +29,6 @@ export function chainFirst<I>(f: (i: I) => IOT<unknown>): Fn<I, IOT<I>> {
   );
 }
 
-export function log<T>(i: IOT<T>): IOT<T> {
-  return _(i)
-    ._(chainFirst((i) => () => console.log(i)))
-    ._v();
+export function log<I>(i: I): IOT<void> {
+  return () => console.log(i);
 }
