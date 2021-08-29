@@ -3,7 +3,7 @@ import { A, D, DEntry, Dict, O, Str } from '../mod';
 import { _ } from '../ts/pipe';
 
 function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
-  return _(dir)
+  _(dir)
     ._(D.toDEntryArr)
     ._(
       A.map((entry) =>
