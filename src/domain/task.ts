@@ -11,6 +11,10 @@ export function fromValue<T>(t: T): TaskT<T> {
   return () => Promise.resolve(t);
 }
 
+export function createEmpty(): TaskT<void> {
+  return () => Promise.resolve();
+}
+
 /**
  *
  */
