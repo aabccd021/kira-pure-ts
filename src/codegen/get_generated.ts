@@ -19,7 +19,7 @@ function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
                   : DEntry.from({
                       key: _(entry.key)
                         ._(Str.split('.'))
-                        // ._(A.replace(-1, Str.prepend('s.')))
+                        ._(A.replace(-1, Str.prepend('s.')))
                         ._(Str.fromArr('.'))
                         ._v(),
                       value: O.Some.from(
