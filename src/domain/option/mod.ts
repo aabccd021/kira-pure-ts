@@ -12,26 +12,34 @@ export function fromNullable<S>(
   return s === null || s === undefined ? None.from() : Some.from(s);
 }
 
-export function match<S, T>(f: (s: S) => NonNullable<T>): Fn<S, OptionT<T>> {
-  return map<S, OptionT<T>>(
-    () => None.from(),
-    (s) => Some.from(f(s))
-  );
+// eslint-disable-next-line
+export function compactVoid(_: OptionT<void>): void {}
+
+export function matchSome<S, T>(
+  f: (s: S) => NonNullable<T>
+): Fn<S, OptionT<T>> {
+  return map<S, OptionT<T>>({
+    None: () => None.from(),
+    Some: (s) => Some.from(f(s)),
+  });
 }
 
 export function chain<T, S>(f: (s: S) => OptionT<T>): Fn<S, OptionT<T>> {
   return (o) =>
     _(o)
-      ._(match(f))
+      ._(matchSome(f))
       ._(
-        map(
-          () => None.from(),
-          (v) => v
-        )
+        map({
+          None: () => None.from(),
+          Some: (v) => v,
+        })
       )
       ._v();
 }
 
 export function getSomeOrElse<S>(f: () => S): Fn<S, S> {
-  return map(f, (s) => s);
+  return map({
+    None: f,
+    Some: (s) => s,
+  });
 }

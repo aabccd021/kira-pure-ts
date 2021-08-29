@@ -17,11 +17,26 @@ export type OptionT<S> = __ & (NoneT | SomeT<S>);
 
 export type Fn<S, T> = (e: OptionT<S>) => T;
 
-export function map<S, T>(onNone: () => T, onSome: (s: S) => T): Fn<S, T> {
+export function map<S, T>({
+  None,
+  Some,
+}: {
+  readonly None: () => T;
+  readonly Some: (s: S) => T;
+}): Fn<S, T> {
   return (o) =>
-    o._tag === 'None'
-      ? onNone()
-      : o._tag === 'Some'
-      ? onSome(o.value)
-      : absurd(o);
+    o._tag === 'None' ? None() : o._tag === 'Some' ? Some(o.value) : absurd(o);
+}
+
+export function match<S, T>({
+  None,
+  Some,
+}: {
+  readonly None: () => T;
+  readonly Some: (s: S) => NonNullable<T>;
+}): Fn<S, T> {
+  return map<S, T>({
+    None: () => None(),
+    Some: (s) => Some(s),
+  });
 }

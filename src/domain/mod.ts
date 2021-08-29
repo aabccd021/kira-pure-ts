@@ -1,7 +1,7 @@
 export type {
   ArrT as Arr,
+  DictEntryT as DEntryT,
   DictT as Dict,
-  DictEntryT,
   EitherT as Either,
   IOT as IO,
   OptionT as Option,
@@ -18,7 +18,7 @@ export type {
 export {
   Arr as A,
   Dict as D,
-  DictEntry,
+  DictEntry as DEntry,
   Either as E,
   IO as I,
   Option as O,

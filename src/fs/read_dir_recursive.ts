@@ -30,7 +30,7 @@ export function readDirRecursive(path: string): TaskOption<Dict<DirEntT>> {
             )
           )
           ._(D.swapTask)
-          ._(T.match(D.filterNone))
+          ._(T.match(D.compactOption))
           ._v()
       )
     )

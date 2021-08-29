@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-import { _, A, D, Dict, DictEntry, O, T, TaskOption, TO } from '../mod';
+import { _, A, D, DEntry, Dict, O, T, TaskOption, TO } from '../mod';
 import { DirEntEnum } from './domain/mod';
 
 /**
@@ -23,11 +23,11 @@ export function readDir(path: string): TaskOption<Dict<DirEntEnum>> {
               _<DirEntEnum>(
                 ent.isDirectory() ? 'directory' : ent.isFile() ? 'file' : 'etc'
               )
-                ._(DictEntry.withKey(ent.name))
+                ._(DEntry.withKey(ent.name))
                 ._v()
             )
           )
-          ._(D.fromEntry)
+          ._(D.fromDEntryArr)
           ._v()
       )
     )

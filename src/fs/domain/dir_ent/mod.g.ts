@@ -21,29 +21,55 @@ export type DirEntT = FileT | DirT | EtcT;
 
 export type Fn<TResult> = (dirEnt: DirEntT) => TResult;
 
-export function map<TResult>(
-  onDir: (dir: DirT) => TResult,
-  onEtc: (etc: EtcT) => TResult,
-  onFile: (file: FileT) => TResult
-): Fn<TResult> {
+export function map<TResult>({
+  Dir,
+  Etc,
+  File,
+}: {
+  readonly Dir: (dir: DirT) => TResult;
+  readonly Etc: (etc: EtcT) => TResult;
+  readonly File: (file: FileT) => TResult;
+}): Fn<TResult> {
   return (dirEnt) =>
     dirEnt._type === 'Dir'
-      ? onDir(dirEnt)
+      ? Dir(dirEnt)
       : dirEnt._type === 'Etc'
-      ? onEtc(dirEnt)
+      ? Etc(dirEnt)
       : dirEnt._type === 'File'
-      ? onFile(dirEnt)
+      ? File(dirEnt)
       : absurd(dirEnt);
 }
 
-export function match<TResult>(
-  onDir: (child: Dict<DirEntT>) => TResult,
-  onEtc: () => TResult,
-  onFile: (content: string) => TResult
-): Fn<TResult> {
-  return map(
-    (dir) => onDir(dir.child),
-    onEtc,
-    (file) => onFile(file.content)
-  );
+export function mapElse<TResult>({
+  Dir,
+  Etc,
+  File,
+  fallback,
+}: {
+  readonly Dir?: (dir: DirT) => TResult;
+  readonly Etc?: (etc: EtcT) => TResult;
+  readonly File?: (file: FileT) => TResult;
+  readonly fallback: () => TResult;
+}): Fn<TResult> {
+  return map({
+    Dir: Dir ?? fallback,
+    Etc: Etc ?? fallback,
+    File: File ?? fallback,
+  });
+}
+
+export function match<TResult>({
+  Dir,
+  Etc,
+  File,
+}: {
+  readonly Dir: (child: Dict<DirEntT>) => TResult;
+  readonly Etc: () => TResult;
+  readonly File: (content: string) => TResult;
+}): Fn<TResult> {
+  return map({
+    Dir: (dir) => Dir(dir.child),
+    Etc,
+    File: (file) => File(file.content),
+  });
 }
