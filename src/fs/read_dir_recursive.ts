@@ -1,4 +1,4 @@
-import { _, D, Dict, O, Str, T, TaskOption, TO } from '../mod';
+import { _, D, Dict, Str, T, TaskOption, TO } from '../mod';
 import { DirEnt, DirEntT, readDir } from './mod';
 import { readFile } from './read_file';
 
