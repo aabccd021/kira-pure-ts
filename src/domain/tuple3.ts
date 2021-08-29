@@ -46,7 +46,7 @@ export function swapOption<A, B, C>([a, ...rest]: Tuple3T<
       O.chain((prev) =>
         _(P2.from(...rest))
           ._(P2.swapOption)
-          ._(O.match(fromPrepended(() => prev)))
+          ._(O.matchSome(fromPrepended(() => prev)))
           ._v()
       )
     )

@@ -12,5 +12,5 @@ export type Fn<L, R, T> = (oe: OptionEitherT<L, R>) => T;
 export function mapRight<L, R, T>(
   f: (r: R) => T
 ): Fn<L, R, OptionEitherT<L, T>> {
-  return O.match(E.mapRight(f));
+  return O.matchSome(E.mapRight(f));
 }

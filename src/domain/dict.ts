@@ -1,13 +1,24 @@
 import { _ } from '../ts/mod';
-import { A, Arr, DictEntryT, E, Either, O, Option, P2, T, Task } from './mod';
-import { DictEntry } from './mod.g';
+import {
+  A,
+  Arr,
+  DEntry,
+  DEntryT,
+  E,
+  Either,
+  O,
+  Option,
+  P2,
+  T,
+  Task,
+} from './mod';
 
 // eslint-disable-next-line functional/prefer-type-literal
 export interface DictT<D> {
   readonly [index: string]: NonNullable<D>;
 }
 
-export function fromEntry<D>(entries: readonly DictEntryT<D>[]): DictT<D> {
+export function fromDEntryArr<D>(entries: readonly DEntryT<D>[]): DictT<D> {
   return Object.fromEntries(entries.map(({ key, value }) => [key, value]));
 }
 
@@ -60,18 +71,21 @@ export function values<D>(d: DictT<D>): Arr<D> {
   return Object.values(d);
 }
 
-export function filterNone<S>(d: DictT<Option<NonNullable<S>>>): DictT<S> {
+export function compactOption<S>(d: DictT<Option<NonNullable<S>>>): DictT<S> {
   return _(d)
     ._(
       reduce({}, (acc, oVal, key) =>
         _(oVal)
-          ._(O.match((val) => ({ ...acc, [key]: val })))
+          ._(O.matchSome((val) => ({ ...acc, [key]: val })))
           ._(O.getSomeOrElse(() => acc))
           ._v()
       )
     )
     ._v();
 }
+
+// eslint-disable-next-line
+export function compactVoid(_: DictT<void>): void {}
 
 export function swapEither<L, R>(
   de: DictT<Either<L, NonNullable<R>>>
@@ -93,12 +107,12 @@ export function swapTask<D>(dt: DictT<Task<NonNullable<D>>>): Task<DictT<D>> {
     ._(
       mapEntries((el, key) =>
         _(el)
-          ._(T.match(DictEntry.withKey(key)))
+          ._(T.match(DEntry.withKey(key)))
           ._v()
       )
     )
     ._(A.swapTask)
-    ._(T.match(fromEntry))
+    ._(T.match(fromDEntryArr))
     ._v();
 }
 

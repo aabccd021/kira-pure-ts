@@ -38,7 +38,7 @@ export function swapOption<A, B>([a, ...rest]: Tuple2T<
     ._(
       O.chain((prev) =>
         _(...rest)
-          ._(O.match(fromPrepended(() => prev)))
+          ._(O.matchSome(fromPrepended(() => prev)))
           ._v()
       )
     )
