@@ -69,7 +69,7 @@ export function slice<A>(start?: number, end?: number): Fn<A, ArrT<A>> {
   return (arr) => arr.slice(start, end);
 }
 
-export function upsert<A>(idx: number, el: NonNullable<A>): Fn<A, ArrT<A>> {
+export function insert<A>(idx: number, el: NonNullable<A>): Fn<A, ArrT<A>> {
   return (arr) =>
     _(arr)
       ._(slice(0, idx))
@@ -84,6 +84,21 @@ export function upsert<A>(idx: number, el: NonNullable<A>): Fn<A, ArrT<A>> {
       ._v();
 }
 
-export function replace<A>(idx: number, f: (a: A) => A): Fn<A, ArrT<A>> {
-  return _(arr)._(lookup(idx))._v();
+export function replace<A>(
+  idx: number,
+  f: (a: A) => NonNullable<A>
+): Fn<A, ArrT<A>> {
+  return (arr) =>
+    _(arr)
+      ._(lookup(idx))
+      ._(
+        O.match({
+          None: () => arr,
+          Some: (el) =>
+            _(arr)
+              ._(insert(idx, f(el)))
+              ._v(),
+        })
+      )
+      ._v();
 }
