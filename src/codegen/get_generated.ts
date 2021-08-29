@@ -3,7 +3,7 @@ import { A, D, DEntry, Dict, O, Str } from '../mod';
 import { _ } from '../ts/pipe';
 
 function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
-  _(dir)
+  return _(dir)
     ._(D.toDEntryArr)
     ._(
       A.map((entry) =>
@@ -19,7 +19,7 @@ function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
                   : DEntry.from({
                       key: _(entry.key)
                         ._(Str.split('.'))
-                        ._(A.replace(-1, Str.prepend('s.')))
+                        // ._(A.replace(-1, Str.prepend('s.')))
                         ._(Str.fromArr('.'))
                         ._v(),
                       value: O.Some.from(
@@ -44,10 +44,10 @@ function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
 export function getGenerated(dir: Dict<DirEntT>): Dict<DirEntT> {
   return _(dir)
     ._(
-      D.map((ent, name) =>
+      D.mapValues((ent, name) =>
         _(ent)
           ._(
-            DirEnt.map({
+            DirEnt.mapElse({
               Dir: (dir) =>
                 _(dir)
                   ._(
@@ -57,12 +57,12 @@ export function getGenerated(dir: Dict<DirEntT>): Dict<DirEntT> {
                   )
                   ._(O.Some.asOptionFrom)
                   ._v(),
-              Etc: () => O.None.asOptionFrom<DirEntT>(),
-              File: () => O.None.asOptionFrom<DirEntT>(),
+              fallback: () => O.None.asOptionFrom<DirEntT>(),
             })
           )
           ._v()
       )
     )
+    ._(D.compactOption)
     ._v();
 }

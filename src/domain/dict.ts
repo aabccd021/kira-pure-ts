@@ -12,6 +12,7 @@ import {
   T,
   Task,
 } from './mod';
+import { DictEntry } from './mod.g';
 
 // eslint-disable-next-line functional/prefer-type-literal
 export interface DictT<D> {
@@ -20,6 +21,12 @@ export interface DictT<D> {
 
 export function fromDEntryArr<D>(entries: readonly DEntryT<D>[]): DictT<D> {
   return Object.fromEntries(entries.map(({ key, value }) => [key, value]));
+}
+
+export function toDEntryArr<D>(d: DictT<D>): readonly DEntryT<D>[] {
+  return Object.entries(d).map(([key, value]) =>
+    DictEntry.from({ key, value })
+  );
 }
 
 export type Fn<D, T> = (dict: DictT<D>) => T;
