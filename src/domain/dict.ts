@@ -92,6 +92,12 @@ export function compactOption<S>(d: DictT<Option<NonNullable<S>>>): DictT<S> {
 // eslint-disable-next-line
 export function compactVoid(_: DictT<void>): void {}
 
+export function mapValuesOptional<V, T>(
+  f: (val: V, key: string, idx: number) => Option<NonNullable<T>>
+): Fn<V, DictT<T>> {
+  return (d) => _(d)._(mapValues(f))._(compactOption)._v();
+}
+
 export function swapEither<L, R>(
   de: DictT<Either<L, NonNullable<R>>>
 ): Either<L, DictT<R>> {

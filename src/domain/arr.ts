@@ -147,6 +147,12 @@ export function compactOption<A>(arr: ArrT<Option<NonNullable<A>>>): ArrT<A> {
     ._v();
 }
 
+export function mapOptional<A, TResult>(
+  f: (a: A) => Option<NonNullable<TResult>>
+): Fn<A, ArrT<TResult>> {
+  return (arr) => _(arr)._(map(f))._(compactOption)._v();
+}
+
 export function flatten<A>(arr: ArrT<ArrT<A>>): ArrT<A> {
   return arr.flat();
 }
