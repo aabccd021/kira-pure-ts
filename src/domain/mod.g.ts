@@ -3,6 +3,7 @@ import { DictT } from './dict';
 import { DictEntryT } from './dict_entry';
 import { EitherT } from './either/mod';
 import { IOT } from './io';
+import { NumT } from './num';
 import { OptionT } from './option/mod';
 import { OptionEitherT } from './option_either';
 import { OptionTaskT } from './option_task';
@@ -20,6 +21,7 @@ export * as Dict from './dict';
 export * as DictEntry from './dict_entry';
 export * as Either from './either/mod';
 export * as IO from './io';
+export * as Num from './num';
 export * as Option from './option/mod';
 export * as OptionEither from './option_either';
 export * as OptionTask from './option_task';
@@ -39,6 +41,7 @@ export type {
   DictT,
   EitherT,
   IOT,
+  NumT,
   OptionEitherT,
   OptionT,
   OptionTaskEitherT,

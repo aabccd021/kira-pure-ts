@@ -102,3 +102,7 @@ export function replace<A>(
       )
       ._v();
 }
+
+export function length<A>(arr: ArrT<A>): number {
+  return arr.length;
+}

@@ -1,5 +1,5 @@
 import { DirEnt, DirEntT } from '../fs/mod';
-import { A, D, DEntry, Dict, O, Str } from '../mod';
+import { A, D, DEntry, Dict, Num, O, Str } from '../mod';
 import { _ } from '../ts/pipe';
 
 function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
@@ -11,7 +11,8 @@ function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
           ._(
             DirEnt.mapElse({
               File: () =>
-                entry.key === 'mod.ts'
+                entry.key === 'mod.ts' ||
+                _(entry.key)._(Str.split('.'))._(A.length)._(Num.lt(2))._v()
                   ? DEntry.from({
                       key: entry.key,
                       value: O.None.asOptionFrom<DirEntT>(),

@@ -21,6 +21,7 @@ export {
   DictEntry as DEntry,
   Either as E,
   IO as I,
+  Num,
   Option as O,
   OptionEither as OE,
   OptionTask as OT,
