@@ -1,6 +1,6 @@
 export * from './dict_entry.g';
 
-export type DictEntryT<D> = {
+export type __<D> = {
   readonly key: string;
   readonly value: NonNullable<D>;
 };

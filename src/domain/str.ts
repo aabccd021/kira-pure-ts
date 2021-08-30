@@ -10,6 +10,10 @@ export function fromArr(separator: string): CFn<Arr<string>> {
   return (arr) => arr.join(separator);
 }
 
+export function toUpperCase(str: string): string {
+  return str.toUpperCase();
+}
+
 export type Fn<T> = (s: string) => T;
 
 export function append(suffix: string): Fn<string> {

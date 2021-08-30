@@ -3,16 +3,17 @@ import { A, D, DEntry, Dict, Num, O, Str } from '../mod';
 import { _ } from '../ts/pipe';
 import { TypeDef, TypeStr } from './domain/mod.g';
 
-function generateType(code: string): string {
-  return _(code)
-    ._(Str.split('export '))
-    ._(A.filter(Str.startsWith('type')))
-    ._(A.lookup(0))
-    ._(O.getSomeOrElse(() => ''))
-    ._(TypeDef.createFromStr)
-    ._(TypeDef.toTypeStr)
-    ._(TypeStr.toCreateFnStr)
-    ._v();
+function generateTypeWithFileName(fileName: string): (code: string) => string {
+  return (code) =>
+    _(code)
+      ._(Str.split('export '))
+      ._(A.filter(Str.startsWith('type')))
+      ._(A.lookup(0))
+      ._(O.getSomeOrElse(() => ''))
+      ._(TypeDef.createFromStrWithFileName(fileName))
+      ._(TypeDef.toTypeStr)
+      ._(TypeStr.toCreateFnStr)
+      ._v();
 }
 
 function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
@@ -37,7 +38,15 @@ function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
                         ._(Str.fromArr('.'))
                         ._v(),
                       value: _(content)
-                        ._(generateType)
+                        ._(
+                          generateTypeWithFileName(
+                            _(entry.key)
+                              ._(Str.split('.'))
+                              ._(A.lookup(0))
+                              ._(O.getSomeOrElse(() => ''))
+                              ._v()
+                          )
+                        )
                         ._(DirEnt.File.from)
                         ._(O.Some.from)
                         ._v(),
