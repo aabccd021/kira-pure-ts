@@ -57,7 +57,6 @@ function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
     )
     ._(A.compactOption)
     ._(D.fromEntries)
-
     ._(domainToStr)
     ._(D.toEntries)
     ._(
