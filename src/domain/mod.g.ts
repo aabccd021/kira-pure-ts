@@ -1,6 +1,6 @@
 import { ArrT } from './arr';
 import { DictT } from './dict';
-import { DEntryT } from './dict_entry';
+import { DictEntryT } from './dict_entry';
 import { EitherT } from './either/mod';
 import { IOT } from './io';
 import { NumT } from './num';
@@ -37,7 +37,7 @@ export * as Tuple4 from './tuple4';
 
 export type {
   ArrT,
-  DEntryT,
+  DictEntryT,
   DictT,
   EitherT,
   IOT,
