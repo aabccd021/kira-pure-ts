@@ -41,6 +41,22 @@ export function map<T, TResult>({
       : absurd(dirEnt);
 }
 
+export function mapSome<T, TResult>({
+  Dir,
+  Etc,
+  File,
+}: {
+  readonly Dir?: (dir: DirT<T>) => NonNullable<TResult>;
+  readonly Etc?: (etc: EtcT) => NonNullable<TResult>;
+  readonly File?: (file: FileT<T>) => NonNullable<TResult>;
+}): Fn<T, Option<TResult>> {
+  return map({
+    Dir: (x) => O.fromNullable(Dir?.(x)),
+    Etc: (x) => O.fromNullable(Etc?.(x)),
+    File: (x) => O.fromNullable(File?.(x)),
+  });
+}
+
 export function mapElse<T, TResult>({
   Dir,
   Etc,

@@ -13,17 +13,17 @@ export type TypeDefT = {
   readonly name: string;
 };
 
-export function createFromStr(str: string, fileName: string): TypeDefT {
-  return _(str)
+export function createFromStr(code: string, fileName: string): TypeDefT {
+  return _(code)
     ._(Str.split('export '))
     ._(A.filter(Str.startsWith('type __')))
     ._(A.lookup(0))
     ._(O.getSomeOrElse(() => ''))
     ._(Str.replaceAll('type __<', ''))
     ._(Str.replaceAll('> = ', ''))
-    ._((str) =>
+    ._((typeStr) =>
       create({
-        entries: _(str)
+        entries: _(typeStr)
           ._(Str.split('{'))
           ._(A.lookup(1))
           ._(O.getSomeOrElse(() => ''))
@@ -54,13 +54,13 @@ export function createFromStr(str: string, fileName: string): TypeDefT {
           ._(A.compactOption)
           ._(D.fromEntries)
           ._v(),
-        generics: _(str)
+        generics: _(typeStr)
           ._(Str.split('{'))
           ._(A.lookup(0))
           ._(O.getSomeOrElse(() => ''))
           ._(Str.split(','))
           ._v(),
-        imports: _(str)
+        imports: _(typeStr)
           ._(Str.split('export'))
           ._(A.lookup(0))
           ._(O.getSomeOrElse(() => ''))
