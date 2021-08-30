@@ -1,5 +1,5 @@
 import { _ } from '../ts/mod';
-import { E, Either, O, Option } from './mod';
+import { A, Arr, E, Either, O, Option } from './mod';
 
 export type Tuple2T<A, B> = readonly [A, B];
 
@@ -42,6 +42,12 @@ export function swapOption<A, B>([a, ...rest]: Tuple2T<
           ._v()
       )
     )
+    ._v();
+}
+
+export function fromArr<A>(arr: Arr<A>): Option<Tuple2T<A, A>> {
+  return _(from(_(arr)._(A.lookup(0))._v(), _(arr)._(A.lookup(0))._v()))
+    ._(swapOption)
     ._v();
 }
 

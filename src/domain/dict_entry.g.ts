@@ -1,4 +1,5 @@
 import { __ } from './dict_entry';
+import { Tuple2 } from './mod';
 
 export type DEntryT<D> = __<D>;
 
@@ -10,6 +11,13 @@ export function create<D>({
   readonly value: NonNullable<D>;
 }): DEntryT<D> {
   return { key, value };
+}
+
+export function createFromTuple<D>([key, value]: Tuple2<
+  string,
+  NonNullable<D>
+>): DEntryT<D> {
+  return create({ key, value });
 }
 
 export function createFromKey<D>({
