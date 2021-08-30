@@ -46,7 +46,7 @@ export function swapOption<A, B>([a, ...rest]: Tuple2T<
 }
 
 export function fromArr<A>(arr: Arr<A>): Option<Tuple2T<A, A>> {
-  return _(from(_(arr)._(A.lookup(0))._v(), _(arr)._(A.lookup(0))._v()))
+  return _(from(_(arr)._(A.lookup(0))._v(), _(arr)._(A.lookup(1))._v()))
     ._(swapOption)
     ._v();
 }

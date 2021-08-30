@@ -1,3 +1,8 @@
+import { exec } from './child_process/exec';
 import { generate } from './codegen/mod';
 
-generate('./src/tempura');
+console.log('generate');
+generate('./tempura');
+console.log('lint');
+exec('yarn lint --fix');
+console.log('done');

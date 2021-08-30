@@ -7,8 +7,5 @@ export function create<D>({
   readonly key: string;
   readonly value: NonNullable<D>;
 }): DictEntryT<D> {
-  return {
-    key,
-    value,
-  };
+  return { key, value };
 }

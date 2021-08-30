@@ -13,6 +13,14 @@ export function toUpperCase(str: string): string {
   return str.toUpperCase();
 }
 
+export function isEmpty(str: string): boolean {
+  return str === '';
+}
+
+export function isNotEmpty(str: string): boolean {
+  return !isEmpty(str);
+}
+
 export type Fn<T> = (s: string) => T;
 
 export function append(suffix: string): Fn<string> {

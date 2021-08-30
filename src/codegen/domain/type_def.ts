@@ -23,16 +23,19 @@ function rawToEntryStr(entryStr: string): Option<DEntryT<string>> {
     ._v();
 }
 
+
 function typeStrToEntries(typeStr: string): Dict<string> {
   return _(typeStr)
     ._(Str.split('{'))
     ._(A.lookup(1))
     ._(O.getSomeOrElse(() => ''))
     ._(Str.replaceAll(' ', ''))
+    ._(Str.replaceAll('\n', ''))
     ._(Str.replaceAll('{', ''))
     ._(Str.replaceAll('};', ''))
     ._(Str.replaceAll('readonly', ''))
     ._(Str.split(';'))
+    ._(A.filter(Str.isNotEmpty))
     ._(A.map(rawToEntryStr))
     ._(A.compactOption)
     ._(D.fromEntries)
