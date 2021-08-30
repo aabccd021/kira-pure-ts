@@ -1,14 +1,18 @@
-import { Arr } from '../../mod';
+import { Arr, Dict } from '../../mod';
 import { TypeDefT } from './type_def';
 
 export function create({
   generics,
+  entries,
+  name,
 }: {
+  readonly entries: Dict<string>;
   readonly generics: Arr<string>;
+  readonly name: string;
 }): TypeDefT {
-  return { generics };
-}
-
-export function createFromGenerics(generics: Arr<string>): TypeDefT {
-  return create({ generics });
+  return {
+    entries,
+    generics,
+    name,
+  };
 }

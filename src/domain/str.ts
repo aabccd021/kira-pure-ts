@@ -35,5 +35,5 @@ export function replaceAll(
   searchValue: string,
   replaceValue: string
 ): Fn<string> {
-  return (str) => str.replaceAll(searchValue, replaceValue);
+  return (str) => str.replace(new RegExp(searchValue, 'g'), replaceValue);
 }

@@ -1,1 +1,8 @@
-export function _(): void {}
+{
+  "_tag": "Some",
+  "value": {
+    "generics": [
+      "D"
+    ]
+  }
+}

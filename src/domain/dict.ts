@@ -41,6 +41,10 @@ export function mapEntries<V, T>(
   return (d) => Object.entries(d).map(([key, val], idx) => f(val, key, idx));
 }
 
+export function keys<T>(d: DictT<T>): Arr<string> {
+  return Object.keys(d);
+}
+
 export function filter<V>(
   f: (val: V, key: string, idx: number) => boolean
 ): Fn<V, DictT<V>> {

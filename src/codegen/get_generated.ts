@@ -1,47 +1,17 @@
 import { DirEnt, DirEntT } from '../fs/mod';
 import { A, D, DEntry, Dict, Num, O, Str } from '../mod';
 import { _ } from '../ts/pipe';
-import { TypeDef } from './domain/mod';
-
-// type TypeDef = {
-//   readonly generics: ArrT<string>;
-// };
+import { TypeDef, TypeStr } from './domain/mod.g';
 
 function generateType(code: string): string {
   return _(code)
     ._(Str.split('export '))
     ._(A.filter(Str.startsWith('type')))
     ._(A.lookup(0))
-    ._(
-      O.matchSome((s) =>
-        _(s)
-          ._(Str.split(' '))
-          ._(A.lookup(1))
-          ._(
-            O.matchSome((g) =>
-              _(g)
-                ._(Str.replaceAll('>', ''))
-                ._(Str.split('<'))
-                ._(A.lookup(1))
-                ._(
-                  O.match({
-                    None: () => A.createEmpty<string>(),
-                    Some: (s) => [s],
-                  })
-                )
-                ._(TypeDef.createFromGenerics)
-                ._v()
-            )
-          )
-          ._v()
-      )
-    )
-    ._(
-      O.match({
-        None: () => 'wrong',
-        Some: (s) => JSON.stringify(s, undefined, 2),
-      })
-    )
+    ._(O.getSomeOrElse(() => ''))
+    ._(TypeDef.createFromStr)
+    ._(TypeDef.toTypeStr)
+    ._(TypeStr.toCreateFnStr)
     ._v();
 }
 
