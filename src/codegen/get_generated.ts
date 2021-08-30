@@ -1,9 +1,23 @@
 import { DEntry, DEntryT, Num } from '../domain/mod';
-import { Arr } from '../domain/mod.g';
+import { Arr, ArrT } from '../domain/mod.g';
 import { DirEnt, DirEntT } from '../fs/mod';
 import { A, D, Dict, O, Str } from '../mod';
 import { _ } from '../ts/pipe';
 import { TypeDef, TypeDefT, TypeStr } from './domain/mod.g';
+
+function fileNameWithoutExtension<T>(entries: ArrT<DEntryT<T>>): ArrT<string> {
+  return _(entries)
+    ._(
+      A.map((entry) =>
+        _(entry.key)
+          ._(Str.split('.'))
+          ._(A.lookup(0))
+          ._(O.getSomeOrElse(() => ''))
+          ._v()
+      )
+    )
+    ._v();
+}
 
 function domainToStr(dir: Dict<DirEntT<TypeDefT>>): Dict<DirEntT<string>> {
   return _(dir)
@@ -66,20 +80,14 @@ function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
           ._(
             A.extend(
               _(entries)
+                ._(fileNameWithoutExtension)
                 ._(
-                  A.map((entry) =>
-                    _(entry.key)
-                      ._(Str.split('.'))
-                      ._(A.lookup(0))
-                      ._(O.getSomeOrElse(() => ''))
-                      ._((name) =>
-                        _('import {')
-                          ._(Str.append(Str.snakeToPascal(name)))
-                          ._(Str.append("T } from './"))
-                          ._(Str.append(name))
-                          ._(Str.append("';"))
-                          ._v()
-                      )
+                  A.map((name) =>
+                    _('import {')
+                      ._(Str.append(Str.snakeToPascal(name)))
+                      ._(Str.append("T } from './"))
+                      ._(Str.append(name))
+                      ._(Str.append("';"))
                       ._v()
                   )
                 )
@@ -89,20 +97,14 @@ function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
           ._(
             A.extend(
               _(entries)
+                ._(fileNameWithoutExtension)
                 ._(
-                  A.map((entry) =>
-                    _(entry.key)
-                      ._(Str.split('.'))
-                      ._(A.lookup(0))
-                      ._(O.getSomeOrElse(() => ''))
-                      ._((name) =>
-                        _('export * as ')
-                          ._(Str.append(Str.snakeToPascal(name)))
-                          ._(Str.append(" from './"))
-                          ._(Str.append(name))
-                          ._(Str.append("';"))
-                          ._v()
-                      )
+                  A.map((name) =>
+                    _('export * as ')
+                      ._(Str.append(Str.snakeToPascal(name)))
+                      ._(Str.append(" from './"))
+                      ._(Str.append(name))
+                      ._(Str.append("';"))
                       ._v()
                   )
                 )
@@ -112,14 +114,15 @@ function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
           ._(
             A.extend(
               _(entries)
+                ._(fileNameWithoutExtension)
                 ._(
-                  A.map((entry) =>
-                    _(entry.key)
-                      ._(Str.split('.'))
-                      ._(A.lookup(0))
-                      ._(O.getSomeOrElse(() => ''))
+                  A.map((name) =>
+                    _(name)
                       ._(Str.snakeToPascal)
-                      ._(Str.append('T,'))
+                      ._(Str.snakeToPascal)
+                      ._((name) =>
+                        _(Str.snakeToPascal(name))._(Str.append('T,'))._v()
+                      )
                       ._v()
                   )
                 )
