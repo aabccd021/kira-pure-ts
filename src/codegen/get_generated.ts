@@ -1,5 +1,4 @@
 import { DEntry, DEntryT, Num } from '../domain/mod';
-import { Arr } from '../domain/mod.g';
 import { DirEnt, DirEntT } from '../fs/mod';
 import { A, D, Dict, O, Str } from '../mod';
 import { _ } from '../ts/pipe';
@@ -43,7 +42,7 @@ function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
                           ._(Str.fromArr('.'))
                           ._v(),
                         value: _(content)
-                          ._(TypeDef.createWithFileName(entry.key))
+                          ._(TypeDef.createFromCodeStr({ fileName: entry.key }))
                           ._(DirEnt.File.create)
                           ._v(),
                       })
@@ -72,7 +71,7 @@ function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
             )
           )
           ._((entries) =>
-            _(Arr.createEmpty<string>())
+            _(A.createEmpty<string>())
               ._(
                 A.extend(
                   _(entries)
@@ -126,7 +125,7 @@ function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
               )
               ._(Str.fromArr(''))
               ._(DirEnt.File.create)
-              ._(DEntry.createWithKey('mod.g.ts'))
+              ._(DEntry.createFromValue({ key: 'mod.g.ts' }))
               ._v()
           )
           ._v()
@@ -142,7 +141,7 @@ export function generateDir(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
       D.mapValues((ent, name) =>
         _(ent)
           ._(
-            DirEnt.mapElse({
+            DirEnt.mapSome({
               Dir: (dir) =>
                 _(dir)
                   ._(
@@ -150,9 +149,7 @@ export function generateDir(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
                       child: name === 'domain' ? generateDomain : generateDir,
                     })
                   )
-                  ._(O.Some.createAsOption)
                   ._v(),
-              fallback: () => O.None.createAsOption<DirEntT<string>>(),
             })
           )
           ._v()

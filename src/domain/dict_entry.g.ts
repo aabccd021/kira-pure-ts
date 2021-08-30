@@ -12,14 +12,18 @@ export function create<D>({
   return { key, value };
 }
 
-export function createWithValue<D>(
-  value: NonNullable<D>
-): (key: string) => DEntryT<D> {
-  return (key) => ({ key, value });
+export function createFromKey<D>({
+  value,
+}: {
+  readonly value: NonNullable<D>;
+}): (key: string) => DEntryT<D> {
+  return (key) => create({ key, value });
 }
 
-export function createWithKey<D>(
-  key: string
-): (value: NonNullable<D>) => DEntryT<D> {
-  return (value) => ({ key, value });
+export function createFromValue<D>({
+  key,
+}: {
+  readonly key: string;
+}): (value: NonNullable<D>) => DEntryT<D> {
+  return (value) => create({ key, value });
 }

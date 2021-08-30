@@ -23,7 +23,7 @@ export function readDir(path: string): TaskOption<Dict<DirEntEnum>> {
               _<DirEntEnum>(
                 ent.isDirectory() ? 'directory' : ent.isFile() ? 'file' : 'etc'
               )
-                ._(DEntry.createWithKey(ent.name))
+                ._(DEntry.createFromValue({ key: ent.name }))
                 ._v()
             )
           )

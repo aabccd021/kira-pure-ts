@@ -102,8 +102,10 @@ export function toTypeStr(typeDef: TypeDefT): TypeStrT {
   });
 }
 
-export function createWithFileName(
-  fileName: string
-): (str: string) => TypeDefT {
+export function createFromCodeStr({
+  fileName,
+}: {
+  readonly fileName: string;
+}): (codeStr: string) => TypeDefT {
   return (str) => createFromStr(str, fileName);
 }
