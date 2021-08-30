@@ -4,21 +4,11 @@ import { A, Arr, D, Dict, O, Option, Str } from '../mod';
 import { _ } from '../ts/pipe';
 import { TypeDef, TypeDefT, TypeStr } from './domain/mod.g';
 
-function domainToStr(dir: Dict<DirEntT<TypeDefT>>): Dict<DirEntT<string>> {
-  return _(dir)
-    ._(
-      D.mapValues(
-        DirEnt.matchSome({
-          File: (content) =>
-            _(content)
-              ._(TypeDef.toTypeStr)
-              ._(TypeStr.toCreateFnStr)
-              ._(DirEnt.File.create)
-              ._v(),
-        })
-      )
-    )
-    ._(D.compactOption)
+function typeDefToFileEnt(typeDef: TypeDefT): DirEnt.FileT<string> {
+  return _(typeDef)
+    ._(TypeDef.toTypeStr)
+    ._(TypeStr.toCreateFnStr)
+    ._(DirEnt.File.create)
     ._v();
 }
 
@@ -149,7 +139,14 @@ function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
     ._(D.toEntries)
     ._(A.mapOptional(dirToDef))
     ._(D.fromEntries)
-    ._(domainToStr)
+    ._(
+      D.mapValues(
+        DirEnt.matchSome({
+          File: typeDefToFileEnt,
+        })
+      )
+    )
+    ._(D.compactOption)
     ._(D.toEntries)
     ._(A.appendReduced(typesToMod))
     ._(D.fromEntries)
