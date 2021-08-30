@@ -1,4 +1,5 @@
 import { DEntry, DEntryT, Num } from '../domain/mod';
+import { Arr } from '../domain/mod.g';
 import { DirEnt, DirEntT } from '../fs/mod';
 import { A, D, Dict, O, Str } from '../mod';
 import { _ } from '../ts/pipe';
@@ -72,46 +73,63 @@ function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
             )
           )
           ._((entries) =>
-            A.create([
-              _(entries)
-                ._(
-                  A.map((name) =>
-                    _('import {')
-                      ._(Str.append(Str.snakeToPascal(name)))
-                      ._(Str.append("T } from './"))
-                      ._(Str.append(name))
-                      ._(Str.append("';"))
-                      ._v()
-                  )
+            _(Arr.createEmpty<string>())
+              ._(
+                A.extend(
+                  _(entries)
+                    ._(
+                      A.map((name) =>
+                        _('import {')
+                          ._(Str.append(Str.snakeToPascal(name)))
+                          ._(Str.append("T } from './"))
+                          ._(Str.append(name))
+                          ._(Str.append("';"))
+                          ._v()
+                      )
+                    )
+                    ._v()
                 )
-                ._v(),
-              _(entries)
-                ._(
-                  A.map((name) =>
-                    _('export * as ')
-                      ._(Str.append(Str.snakeToPascal(name)))
-                      ._(Str.append(" from './"))
-                      ._(Str.append(name))
-                      ._(Str.append("';"))
-                      ._v()
-                  )
+              )
+              ._(
+                A.extend(
+                  _(entries)
+                    ._(
+                      A.map((name) =>
+                        _('export * as ')
+                          ._(Str.append(Str.snakeToPascal(name)))
+                          ._(Str.append(" from './"))
+                          ._(Str.append(name))
+                          ._(Str.append("';"))
+                          ._v()
+                      )
+                    )
+                    ._v()
                 )
-                ._v(),
-              _(entries)
-                ._(
-                  A.map((name) =>
-                    _(name)._(Str.snakeToPascal)._(Str.append('T,'))._v()
-                  )
+              )
+              ._(
+                A.extend(
+                  _(entries)
+                    ._(
+                      A.map((name) =>
+                        _(name)
+                          ._(Str.snakeToPascal)
+                          ._(Str.snakeToPascal)
+                          ._((name) =>
+                            _(Str.snakeToPascal(name))._(Str.append('T,'))._v()
+                          )
+                          ._v()
+                      )
+                    )
+                    ._(A.prepend('export type {'))
+                    ._(A.append('};'))
+                    ._v()
                 )
-                ._(A.prepend('export type {'))
-                ._(A.append('};'))
-                ._v(),
-            ])
+              )
+              ._(Str.fromArr(''))
+              ._(DirEnt.File.create)
+              ._(DEntry.createWithKey('mod.g.ts'))
+              ._v()
           )
-          ._(A.flatten)
-          ._(Str.fromArr(''))
-          ._(DirEnt.File.create)
-          ._(DEntry.createWithKey('mod.g.ts'))
           ._v()
       )
     )
