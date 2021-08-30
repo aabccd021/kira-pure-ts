@@ -1,8 +1,3 @@
-{
-  "_tag": "Some",
-  "value": {
-    "generics": [
-      "D"
-    ]
-  }
+export function create<D>({}: {}): Ab<D> {
+  return {};
 }

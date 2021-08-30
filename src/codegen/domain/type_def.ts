@@ -11,31 +11,33 @@ export type TypeDefT = {
   readonly name: string;
 };
 
-export function getGenericsFromTypeName(typeName: string): Arr<string> {
-  return _(typeName)
-    ._(Str.replaceAll('>', ''))
-    ._(Str.split('<'))
+export function createFromStr(str: string): TypeDefT {
+  return _(str)
+    ._(Str.split(' '))
     ._(A.lookup(1))
-    ._(
-      O.match({
-        None: () => A.createEmpty<string>(),
-        Some: (s) => [s],
+    ._(O.getSomeOrElse(() => ''))
+    ._((nameStr) =>
+      create({
+        entries: {},
+        generics: _(nameStr)
+          ._(Str.replaceAll('>', ''))
+          ._(Str.split('<'))
+          ._(A.lookup(1))
+          ._(
+            O.match({
+              None: () => A.createEmpty<string>(),
+              Some: (s) => [s],
+            })
+          )
+          ._v(),
+        name: _(nameStr)
+          ._(Str.split('<'))
+          ._(A.lookup(1))
+          ._(O.getSomeOrElse(() => ''))
+          ._v(),
       })
     )
     ._v();
-}
-
-export function createFromStr(str: string): TypeDefT {
-  return create({
-    entries: {},
-    generics: _(str)
-      ._(Str.split(' '))
-      ._(A.lookup(1))
-      ._(O.getSomeOrElse(() => ''))
-      ._(getGenericsFromTypeName)
-      ._v(),
-    name: 'Ab',
-  });
 }
 
 export function toTypeStr(typeDef: TypeDefT): TypeStrT {
