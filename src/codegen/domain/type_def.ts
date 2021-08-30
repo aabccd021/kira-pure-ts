@@ -1,7 +1,6 @@
 import { DEntry, DEntryT, P2 } from '../../domain/mod';
 import { A, Arr, D, Dict, O, Option, Str } from '../../mod';
 import { _ } from '../../ts/mod';
-import { TypeStr, TypeStrT } from './mod';
 import { create, TypeDefT } from './type_def.g';
 
 // eslint-disable-next-line import/exports-last
@@ -22,7 +21,6 @@ function rawToEntryStr(entryStr: string): Option<DEntryT<string>> {
     ._(O.matchSome(DEntry.createFromTuple))
     ._v();
 }
-
 
 function typeStrToEntries(typeStr: string): Dict<string> {
   return _(typeStr)
@@ -77,34 +75,6 @@ function createWithFileName(fileName: string): (typeStr: string) => TypeDefT {
     });
 }
 
-function entryToStr(entry: DEntryT<string>): string {
-  return _(entry.key)
-    ._(Str.append(':'))
-    ._(Str.append(entry.value))
-    ._(Str.append(';'))
-    ._v();
-}
-
-function toTypeStrEntries(entries: Dict<string>): string {
-  return _(entries)._(D.toEntries)._(A.map(entryToStr))._(Str.fromArr(''))._v();
-}
-
-function toTypeStrGenerics(generics: Arr<string>): string {
-  return _(generics)
-    ._(Str.fromArr(','))
-    ._(Str.prepend('<'))
-    ._(Str.append('>'))
-    ._v();
-}
-
-function toTypeStrKeys(entries: Dict<string>): string {
-  return _(entries)._(D.keys)._(Str.fromArr(','))._v();
-}
-
-function toTypeStrName(name: string): string {
-  return _(name)._(Str.snakeToPascal)._(Str.append('T'))._v();
-}
-
 export function createFromStr(code: string, fileName: string): TypeDefT {
   return _(code)
     ._(Str.split('export '))
@@ -115,17 +85,6 @@ export function createFromStr(code: string, fileName: string): TypeDefT {
     ._(Str.replaceAll('> = ', ''))
     ._(createWithFileName(fileName))
     ._v();
-}
-
-export function toTypeStr(typeDef: TypeDefT): TypeStrT {
-  return TypeStr.create({
-    entries: toTypeStrEntries(typeDef.entries),
-    fileName: typeDef.name,
-    generics: toTypeStrGenerics(typeDef.generics),
-    imports: typeDef.imports,
-    keys: toTypeStrKeys(typeDef.entries),
-    name: toTypeStrName(typeDef.name),
-  });
 }
 
 export function createFromCodeStr({

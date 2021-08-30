@@ -1,8 +1,10 @@
-import { _, Str } from '../../mod';
+import { _, A, Arr, D, DEntryT, Dict, Str } from '../../mod';
+import { TypeDefT } from './mod';
+import { create, TypeStrT } from './type_str.g';
 
-export * from './type_str.g';
-
-export type TypeStrT = {
+// eslint-disable-next-line import/exports-last
+export type __ = {
+  readonly def: TypeDefT;
   readonly entries: string;
   readonly fileName: string;
   readonly generics: string;
@@ -11,7 +13,54 @@ export type TypeStrT = {
   readonly name: string;
 };
 
-export function toCreateFnStr(typeStr: TypeStrT): string {
+// eslint-disable-next-line import/exports-last
+export * from './type_str.g';
+
+function entryToStr(entry: DEntryT<string>): string {
+  return _(entry.key)
+    ._(Str.append(':'))
+    ._(Str.append(entry.value))
+    ._(Str.append(';'))
+    ._v();
+}
+
+function toTypeStrEntries(entries: Dict<string>): string {
+  return _(entries)._(D.toEntries)._(A.map(entryToStr))._(Str.fromArr(''))._v();
+}
+
+function toTypeStrGenerics(generics: Arr<string>): string {
+  return _(generics)
+    ._(Str.fromArr(','))
+    ._(Str.prepend('<'))
+    ._(Str.append('>'))
+    ._v();
+}
+
+function toTypeStrKeys(entries: Dict<string>): string {
+  return _(entries)._(D.keys)._(Str.fromArr(','))._v();
+}
+
+function toTypeStrName(name: string): string {
+  return _(name)._(Str.snakeToPascal)._(Str.append('T'))._v();
+}
+
+function toCurriedConstructor(_: TypeStrT): string {
+  return '';
+}
+
+export function fromTypeDef(typeDef: TypeDefT): TypeStrT {
+  return create({
+    def: typeDef,
+    entries: toTypeStrEntries(typeDef.entries),
+    fileName: typeDef.name,
+    generics: toTypeStrGenerics(typeDef.generics),
+    imports: typeDef.imports,
+    keys: toTypeStrKeys(typeDef.entries),
+    name: toTypeStrName(typeDef.name),
+  });
+}
+
+export function toCompiledStr(typeStr: TypeStrT): string {
   return _("import {__} from './")
     ._(Str.append(typeStr.fileName))
     ._(Str.append("';"))
@@ -34,5 +83,6 @@ export function toCreateFnStr(typeStr: TypeStrT): string {
     ._(Str.append('return {'))
     ._(Str.append(typeStr.keys))
     ._(Str.append('};}'))
+    ._(Str.append(toCurriedConstructor(typeStr)))
     ._v();
 }

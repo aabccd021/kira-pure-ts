@@ -6,8 +6,8 @@ import { TypeDef, TypeDefT, TypeStr } from './domain/mod.g';
 
 function typeDefToFileEnt(typeDef: TypeDefT): DirEnt.FileT<string> {
   return _(typeDef)
-    ._(TypeDef.toTypeStr)
-    ._(TypeStr.toCreateFnStr)
+    ._(TypeStr.fromTypeDef)
+    ._(TypeStr.toCompiledStr)
     ._(DirEnt.File.create)
     ._v();
 }

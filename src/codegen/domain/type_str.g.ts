@@ -1,4 +1,7 @@
-import { TypeStrT } from './type_str';
+import { TypeDefT } from './mod';
+import { __ } from './type_str';
+
+export type TypeStrT = __;
 
 export function create({
   generics,
@@ -7,7 +10,9 @@ export function create({
   entries,
   imports,
   fileName,
+  def,
 }: {
+  readonly def: TypeDefT;
   readonly entries: string;
   readonly fileName: string;
   readonly generics: string;
@@ -16,6 +21,7 @@ export function create({
   readonly name: string;
 }): TypeStrT {
   return {
+    def,
     entries,
     fileName,
     generics,
