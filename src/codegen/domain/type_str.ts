@@ -1,3 +1,4 @@
+import { capitalize } from '../../domain/str';
 import { _, A, Arr, D, DEntryT, Dict, Str } from '../../mod';
 import { TypeDefT } from './mod';
 import { create, TypeStrT } from './type_str.g';
@@ -44,8 +45,43 @@ function toTypeStrName(name: string): string {
   return _(name)._(Str.snakeToPascal)._(Str.append('T'))._v();
 }
 
-function toCurriedConstructor(_: TypeStrT): string {
-  return '';
+function filteredEntries(name: string): string {
+
+}
+
+function toCurriedConstrOfEntry(
+  typeStr: TypeStrT
+): (
+  entry: DEntryT<string>,
+  __: number,
+  entries: Arr<DEntryT<string>>
+) => string {
+  return (entry, __, entries) =>
+    _('export function createFrom')
+      ._(Str.append(capitalize(entry.key)))
+      ._(Str.append(typeStr.generics))
+      ._(Str.append('({'))
+      ._(Str.append(typeStr.keys))
+      ._(Str.append('}:{'))
+      ._(Str.append(typeStr.entries))
+      ._(Str.append('}):'))
+      ._(Str.append(typeStr.name))
+      ._(Str.append(typeStr.generics))
+      ._(Str.append('{'))
+      ._(Str.append('return ('))
+      ._(Str.append(entry.key))
+      ._(Str.append(') => {'))
+      ._(Str.append(typeStr.keys))
+      ._(Str.append('};}'))
+      ._v();
+}
+
+function toCurriedConstructor(typeStr: TypeStrT): string {
+  return _(typeStr.def.entries)
+    ._(D.toEntries)
+    ._(A.map(toCurriedConstrOfEntry(typeStr)))
+    ._(Str.fromArr(''))
+    ._v();
 }
 
 export function fromTypeDef(typeDef: TypeDefT): TypeStrT {

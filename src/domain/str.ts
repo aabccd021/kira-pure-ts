@@ -49,24 +49,22 @@ export function replaceAll(
   return (str) => str.replace(new RegExp(searchValue, 'g'), replaceValue);
 }
 
+export function capitalize(str: string): string {
+  return _(str)
+    ._(Str.split(''))
+    ._(A.lookup(0))
+    ._(O.getSomeOrElse(() => ''))
+    ._(Str.toUpperCase)
+    ._(
+      Str.append(_(str)._(Str.split(''))._(A.slice(1))._(Str.fromArr(''))._v())
+    )
+    ._v();
+}
+
 export function snakeToPascal(snake: string): string {
   return _(snake)
     ._(Str.split('_'))
-    ._(
-      A.map((s) =>
-        _(s)
-          ._(Str.split(''))
-          ._(A.lookup(0))
-          ._(O.getSomeOrElse(() => ''))
-          ._(Str.toUpperCase)
-          ._(
-            Str.append(
-              _(s)._(Str.split(''))._(A.slice(1))._(Str.fromArr(''))._v()
-            )
-          )
-          ._v()
-      )
-    )
+    ._(A.map(capitalize))
     ._(Str.fromArr(''))
     ._v();
 }

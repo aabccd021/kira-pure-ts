@@ -49,7 +49,7 @@ export function lookup<A>(idx: number): Fn<A, Option<A>> {
 }
 
 export function map<A, TResult>(
-  f: (a: A) => NonNullable<TResult>
+  f: (a: A, index: number, arr: ArrT<A>) => NonNullable<TResult>
 ): Fn<A, ArrT<TResult>> {
   return (arr) => arr.map(f);
 }
