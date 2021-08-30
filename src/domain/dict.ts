@@ -25,7 +25,7 @@ export function fromEntries<D>(entries: readonly DEntryT<D>[]): DictT<D> {
 
 export function toEntries<D>(d: DictT<D>): Arr<DEntryT<D>> {
   return Object.entries(d).map(([key, value]) =>
-    DictEntry.from({ key, value })
+    DictEntry.create({ key, value })
   );
 }
 
@@ -113,7 +113,7 @@ export function swapTask<D>(dt: DictT<Task<NonNullable<D>>>): Task<DictT<D>> {
     ._(
       A.map((entry) =>
         _(entry.value)
-          ._(T.match(DEntry.withKey(entry.key)))
+          ._(T.match(DEntry.createFromValueWithKey(entry.key)))
           ._v()
       )
     )

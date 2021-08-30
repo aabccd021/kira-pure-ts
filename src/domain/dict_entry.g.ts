@@ -1,6 +1,8 @@
-import { DictEntryT } from './dict_entry';
+import { __ } from './dict_entry';
 
-export function from<D>({
+export type DictEntryT<D> = __<D>;
+
+export function create<D>({
   key,
   value,
 }: {
@@ -10,13 +12,13 @@ export function from<D>({
   return { key, value };
 }
 
-export function withValue<D>(
+export function createFromKeyWithValue<D>(
   value: NonNullable<D>
 ): (key: string) => DictEntryT<D> {
   return (key) => ({ key, value });
 }
 
-export function withKey<D>(
+export function createFromValueWithKey<D>(
   key: string
 ): (value: NonNullable<D>) => DictEntryT<D> {
   return (value) => ({ key, value });

@@ -7,9 +7,10 @@ function generateTypeWithFileName(fileName: string): (code: string) => string {
   return (code) =>
     _(code)
       ._(Str.split('export '))
-      ._(A.filter(Str.startsWith('type')))
+      ._(A.filter(Str.startsWith('type __')))
       ._(A.lookup(0))
       ._(O.getSomeOrElse(() => ''))
+
       ._(TypeDef.createFromStrWithFileName(fileName))
       ._(TypeDef.toTypeStr)
       ._(TypeStr.toCreateFnStr)
@@ -27,11 +28,11 @@ function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
               File: (content) =>
                 entry.key === 'mod.ts' ||
                 _(entry.key)._(Str.split('.'))._(A.length)._(Num.lt(2))._v()
-                  ? DEntry.from({
+                  ? DEntry.create({
                       key: entry.key,
                       value: O.None.asOptionFrom<DirEntT>(),
                     })
-                  : DEntry.from({
+                  : DEntry.create({
                       key: _(entry.key)
                         ._(Str.split('.'))
                         ._(A.replace(1, Str.prepend('g.')))
@@ -52,7 +53,7 @@ function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
                         ._v(),
                     }),
               fallback: () =>
-                DEntry.from({
+                DEntry.create({
                   key: entry.key,
                   value: O.None.asOptionFrom<DirEntT>(),
                 }),

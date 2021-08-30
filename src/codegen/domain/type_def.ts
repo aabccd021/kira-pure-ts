@@ -14,57 +14,57 @@ export type TypeDefT = {
 };
 
 export function createFromStr(str: string, fileName: string): TypeDefT {
-  return create({
-    entries: _(str)
-      ._(Str.replaceAll(' ', ''))
-      ._(Str.replaceAll('{', ''))
-      ._(Str.replaceAll('};', ''))
-      ._(Str.replaceAll('readonly', ''))
-      ._(Str.split('='))
-      ._(A.lookup(1))
-      ._(O.getSomeOrElse(() => ''))
-      ._(Str.split(';'))
-      ._(
-        A.map((entryStr) =>
-          _(entryStr)
-            ._(Str.split(':'))
-            ._((kvArr) =>
-              P2.from(
-                _(kvArr)._(A.lookup(0))._v(),
-                _(kvArr)._(A.lookup(1))._v()
-              )
+  return _(str)
+    ._(Str.replaceAll('type __<', ''))
+    ._(Str.replaceAll('> = ', ''))
+    ._((str) =>
+      create({
+        entries: _(str)
+          ._(Str.split('{'))
+          ._(A.lookup(1))
+          ._(O.getSomeOrElse(() => ''))
+          ._(Str.replaceAll(' ', ''))
+          ._(Str.replaceAll('{', ''))
+          ._(Str.replaceAll('};', ''))
+          ._(Str.replaceAll('readonly', ''))
+          ._(Str.split(';'))
+          ._(
+            A.map((entryStr) =>
+              _(entryStr)
+                ._(Str.split(':'))
+                ._((kvArr) =>
+                  P2.from(
+                    _(kvArr)._(A.lookup(0))._v(),
+                    _(kvArr)._(A.lookup(1))._v()
+                  )
+                )
+                ._(P2.swapOption)
+                ._(
+                  O.matchSome(
+                    P2.match((key, value) => DEntry.create({ key, value }))
+                  )
+                )
+                ._v()
             )
-            ._(P2.swapOption)
-            ._(
-              O.matchSome(P2.match((key, value) => DEntry.from({ key, value })))
-            )
-            ._v()
-        )
-      )
-      ._(A.compactOption)
-      ._(D.fromEntries)
-      ._v(),
-    generics: _(str)
-      ._(Str.split(' '))
-      ._(A.lookup(1))
-      ._(O.getSomeOrElse(() => ''))
-      ._(Str.replaceAll('>', ''))
-      ._(Str.split('<'))
-      ._(A.lookup(1))
-      ._(
-        O.match({
-          None: () => A.createEmpty<string>(),
-          Some: (s) => [s],
-        })
-      )
-      ._v(),
-    imports: _(str)
-      ._(Str.split('export'))
-      ._(A.lookup(0))
-      ._(O.getSomeOrElse(() => ''))
-      ._v(),
-    name: fileName,
-  });
+          )
+          ._(A.compactOption)
+          ._(D.fromEntries)
+          ._v(),
+        generics: _(str)
+          ._(Str.split('{'))
+          ._(A.lookup(0))
+          ._(O.getSomeOrElse(() => ''))
+          ._(Str.split(','))
+          ._v(),
+        imports: _(str)
+          ._(Str.split('export'))
+          ._(A.lookup(0))
+          ._(O.getSomeOrElse(() => ''))
+          ._v(),
+        name: fileName,
+      })
+    )
+    ._v();
 }
 
 export function toTypeStr(typeDef: TypeDefT): TypeStrT {
@@ -108,6 +108,7 @@ export function toTypeStr(typeDef: TypeDefT): TypeStrT {
         )
       )
       ._(Str.fromArr(''))
+      ._(Str.append('T'))
       ._v(),
   });
 }

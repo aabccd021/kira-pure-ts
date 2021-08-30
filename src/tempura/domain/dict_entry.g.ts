@@ -1,12 +1,12 @@
 import { __ } from './dict_entry';
-export type DictEntry<D> = __<D>;
+export type DictEntryT<D> = __<D>;
 export function create<D>({
   key,
   value,
 }: {
   readonly key: string;
   readonly value: NonNullable<D>;
-}): DictEntry<D> {
+}): DictEntryT<D> {
   return {
     key,
     value,
