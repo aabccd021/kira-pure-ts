@@ -1,9 +1,9 @@
 import { DirEntT, EtcT } from './mod.g';
 
-export function from(): EtcT {
+export function create(): EtcT {
   return { _type: 'Etc' };
 }
 
-export function asDirEntFrom(): DirEntT {
+export function createAsDirEnt<T>(): DirEntT<T> {
   return { _type: 'Etc' };
 }

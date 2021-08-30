@@ -1,20 +1,20 @@
 import { FileT } from './mod';
 
-export function create(content: string): FileT {
+export function create<T>(content: T): FileT<T> {
   return { _type: 'File', content };
 }
 
-export function createAsDirEnt(content: string): FileT {
+export function createAsDirEnt<T>(content: T): FileT<T> {
   return { _type: 'File', content };
 }
 
-export type Fn<T> = (dir: FileT) => T;
+export type Fn<T, TResult> = (dir: FileT<T>) => TResult;
 
-export function copy({
+export function copy<T>({
   content,
 }: {
-  readonly content?: (c: string) => string;
-}): Fn<FileT> {
+  readonly content?: (c: T) => T;
+}): Fn<T, FileT<T>> {
   return (dir) => ({
     _type: 'File',
     content: content?.(dir.content) ?? dir.content,

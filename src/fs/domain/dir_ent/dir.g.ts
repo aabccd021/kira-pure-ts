@@ -1,30 +1,32 @@
 import { Dict } from '../../../mod';
 import { DirEntT, DirT } from './mod';
 
-export function from(child: Dict<DirEntT>): DirT {
+export function create<T>(child: Dict<DirEntT<T>>): DirT<T> {
   return { _type: 'Dir', child };
 }
 
-export function asDirEntFrom(child: Dict<DirEntT>): DirEntT {
+export function createAsDirEnt<T>(child: Dict<DirEntT<T>>): DirEntT<T> {
   return { _type: 'Dir', child };
 }
 
-export type Fn<T> = (dir: DirT) => T;
+export type Fn<T, TResult> = (dir: DirT<T>) => TResult;
 
-export function copy({
+export function copy<T>({
   child,
 }: {
-  readonly child?: (p: Dict<DirEntT>) => Dict<DirEntT>;
-}): Fn<DirT> {
+  readonly child?: (p: Dict<DirEntT<T>>) => Dict<DirEntT<T>>;
+}): Fn<T, DirT<T>> {
   return (dir) => ({
     _type: 'Dir',
     child: child?.(dir.child) ?? dir.child,
   });
 }
 
-export function copyOf(
-  dir: DirT
-): (p: { readonly child?: (p: Dict<DirEntT>) => Dict<DirEntT> }) => DirT {
+export function copyOf<T>(
+  dir: DirT<T>
+): (p: {
+  readonly child?: (p: Dict<DirEntT<T>>) => Dict<DirEntT<T>>;
+}) => DirT<T> {
   return ({ child }) => ({
     _type: 'Dir',
     child: child?.(dir.child) ?? dir.child,

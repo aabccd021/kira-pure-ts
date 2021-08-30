@@ -2,7 +2,9 @@ import { _, D, Dict, Str, T, TaskOption, TO } from '../mod';
 import { DirEnt, DirEntT, readDir } from './mod';
 import { readFile } from './read_file';
 
-export function readDirRecursive(path: string): TaskOption<Dict<DirEntT>> {
+export function readDirRecursive(
+  path: string
+): TaskOption<Dict<DirEntT<string>>> {
   return _(path)
     ._(readDir)
     ._(
@@ -17,14 +19,14 @@ export function readDirRecursive(path: string): TaskOption<Dict<DirEntT>> {
                   entType === 'directory'
                     ? _(dirEntPath)
                         ._(readDirRecursive)
-                        ._(TO.match(DirEnt.Dir.asDirEntFrom))
+                        ._(TO.match(DirEnt.Dir.createAsDirEnt))
                         ._v()
                     : entType === 'file'
                     ? _(dirEntPath)
                         ._(readFile)
                         ._(TO.match(DirEnt.File.createAsDirEnt))
                         ._v()
-                    : TO.someFrom(DirEnt.Etc.asDirEntFrom())
+                    : TO.someFrom(DirEnt.Etc.createAsDirEnt<string>())
                 )
                 ._v()
             )

@@ -4,7 +4,7 @@ import { I, IO, O, Option, T, Task } from './mod';
 export type TaskOptionT<O> = Task<Option<O>>;
 
 export function someFrom<O>(o: NonNullable<O>): Task<O.SomeT<O>> {
-  return T.fromValue(O.Some.from(o));
+  return T.fromValue(O.Some.create(o));
 }
 
 export type Fn<O, T> = (d: TaskOptionT<O>) => T;
@@ -29,13 +29,13 @@ export function chain<O, T>(
 export function chainTask<O, T>(
   f: (o: O) => Task<NonNullable<T>>
 ): Fn<O, TaskOptionT<T>> {
-  return chain((o) => _(o)._(f)._(T.match(O.Some.asOptionFrom))._v());
+  return chain((o) => _(o)._(f)._(T.match(O.Some.createAsOption))._v());
 }
 
 export function chainIO<O, T>(
   f: (o: O) => IO<NonNullable<T>>
 ): Fn<O, TaskOptionT<T>> {
   return chain((o) =>
-    _(o)._(f)._(I.match(O.Some.asOptionFrom))._(I.toTask)._v()
+    _(o)._(f)._(I.match(O.Some.createAsOption))._(I.toTask)._v()
   );
 }

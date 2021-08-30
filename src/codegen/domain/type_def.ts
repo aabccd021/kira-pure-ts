@@ -15,6 +15,10 @@ export type TypeDefT = {
 
 export function createFromStr(str: string, fileName: string): TypeDefT {
   return _(str)
+    ._(Str.split('export '))
+    ._(A.filter(Str.startsWith('type __')))
+    ._(A.lookup(0))
+    ._(O.getSomeOrElse(() => ''))
     ._(Str.replaceAll('type __<', ''))
     ._(Str.replaceAll('> = ', ''))
     ._((str) =>

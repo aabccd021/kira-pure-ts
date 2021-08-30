@@ -3,7 +3,7 @@ import { _ } from '../ts/pipe';
 import { DirEnt, DirEntT } from './domain/mod.g';
 import { writeFileWithPath } from './write_file';
 
-export function writeDir(dir: Dict<DirEntT>, path: string): Task<void> {
+export function writeDir(dir: Dict<DirEntT<string>>, path: string): Task<void> {
   return _(dir)
     ._(
       D.mapValues((ent, name) =>
@@ -32,6 +32,6 @@ export function writeDir(dir: Dict<DirEntT>, path: string): Task<void> {
 
 export function writeDirWithPath(
   path: string
-): (dir: Dict<DirEntT>) => Task<void> {
+): (dir: Dict<DirEntT<string>>) => Task<void> {
   return (dir) => writeDir(dir, path);
 }

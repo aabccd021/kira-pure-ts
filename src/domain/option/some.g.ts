@@ -1,9 +1,9 @@
 import { OptionT, SomeT } from './mod.g';
 
-export function from<S>(value: NonNullable<S>): SomeT<S> {
+export function create<S>(value: NonNullable<S>): SomeT<S> {
   return { _tag: 'Some', value };
 }
 
-export function asOptionFrom<S>(value: NonNullable<S>): OptionT<S> {
-  return from(value);
+export function createAsOption<S>(value: NonNullable<S>): OptionT<S> {
+  return create(value);
 }

@@ -9,7 +9,7 @@ export function readFile(path: string): TaskOption<string> {
   return T.from(() =>
     fs.promises
       .readFile(path, 'utf-8')
-      .then((val) => O.Some.from(val))
+      .then((val) => O.Some.create(val))
       .catch(() => O.None.create())
   );
 }

@@ -11,7 +11,7 @@ export function readDir(path: string): TaskOption<Dict<DirEntEnum>> {
     T.from(() =>
       fs.promises
         .readdir(path, { withFileTypes: true })
-        .then((val) => O.Some.from(val))
+        .then((val) => O.Some.create(val))
         .catch(() => O.None.create())
     )
   )
