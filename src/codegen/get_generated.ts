@@ -142,14 +142,9 @@ export function generateDir(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
         _(ent)
           ._(
             DirEnt.mapSome({
-              Dir: (dir) =>
-                _(dir)
-                  ._(
-                    DirEnt.Dir.copy({
-                      child: name === 'domain' ? generateDomain : generateDir,
-                    })
-                  )
-                  ._v(),
+              Dir: DirEnt.Dir.copy({
+                child: name === 'domain' ? generateDomain : generateDir,
+              }),
             })
           )
           ._v()
