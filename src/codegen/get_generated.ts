@@ -1,10 +1,12 @@
-import { DEntry } from '../domain/mod';
+import { DEntry, DEntryT, Num } from '../domain/mod';
 import { DirEnt, DirEntT } from '../fs/mod';
-import { A, D, DEntryT, Dict, Num, O, Option, Str } from '../mod';
+import { A, D, Dict, O, Str } from '../mod';
 import { _ } from '../ts/pipe';
-import { TypeDef, TypeStr } from './domain/mod.g';
+import { TypeDef, TypeDefT } from './domain/mod.g';
 
-function generateTypeWithFileName(fileName: string): (code: string) => string {
+function generateTypeWithFileName(
+  fileName: string
+): (code: string) => TypeDefT {
   return (code) =>
     _(code)
       ._(Str.split('export '))
@@ -12,19 +14,17 @@ function generateTypeWithFileName(fileName: string): (code: string) => string {
       ._(A.lookup(0))
       ._(O.getSomeOrElse(() => ''))
       ._(TypeDef.createFromStrWithFileName(fileName))
-      ._(TypeDef.toTypeStr)
-      ._(TypeStr.toCreateFnStr)
       ._v();
 }
 
-function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
-  return _(dir)
+function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
+  _(dir)
     ._(D.toEntries)
     ._(
       A.map((entry) =>
         _(entry.value)
           ._(
-            DirEnt.matchElse<Option<DEntryT<DirEntT>>>({
+            DirEnt.matchSomeToOption<string, DEntryT<DirEntT<TypeDefT>>>({
               File: (content) =>
                 entry.key === 'mod.ts' ||
                 _(entry.key)._(Str.split('.'))._(A.length)._(Num.lt(2))._v()
@@ -42,9 +42,8 @@ function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
                           ._v(),
                       })
                     )
-                      ._(O.Some.asOptionFrom)
+                      ._(O.Some.createAsOption)
                       ._v(),
-              fallback: () => O.None.createAsOption(),
             })
           )
           ._v()
@@ -59,11 +58,33 @@ function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
         })
       )
     )
+    ._(
+      A.map((entry) =>
+        _(entry.value)
+          ._(
+            DirEnt.matchSome<TypeDefT, DEntryT<DirEntT<string>>>({
+              File: () =>
+                _(
+                  DEntry.create({
+                    key: _(entry.key)
+                      ._(Str.split('.'))
+                      ._(A.replace(1, Str.prepend('g.')))
+                      ._(Str.fromArr('.'))
+                      ._v(),
+                    value: DirEnt.File.create(''),
+                  })
+                )._v(),
+            })
+          )
+          ._v()
+      )
+    )
+    ._(A.compactOption)
     ._(D.fromEntries)
     ._v();
 }
 
-export function generateDir(dir: Dict<DirEntT>): Dict<DirEntT> {
+export function generateDir(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
   return _(dir)
     ._(
       D.mapValues((ent, name) =>
@@ -77,9 +98,9 @@ export function generateDir(dir: Dict<DirEntT>): Dict<DirEntT> {
                       child: name === 'domain' ? generateDomain : generateDir,
                     })
                   )
-                  ._(O.Some.asOptionFrom)
+                  ._(O.Some.createAsOption)
                   ._v(),
-              fallback: () => O.None.createAsOption<DirEntT>(),
+              fallback: () => O.None.createAsOption<DirEntT<string>>(),
             })
           )
           ._v()
