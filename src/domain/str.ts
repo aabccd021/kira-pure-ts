@@ -1,6 +1,5 @@
-// import { E, Either } from 'kira-pure';
-
-import { Arr } from './mod';
+import { _ } from '../mod';
+import { A, Arr, O, Str } from './mod';
 
 export type StrT = string;
 
@@ -40,4 +39,26 @@ export function replaceAll(
   replaceValue: string
 ): Fn<string> {
   return (str) => str.replace(new RegExp(searchValue, 'g'), replaceValue);
+}
+
+export function snakeToPascal(snake: string): string {
+  return _(snake)
+    ._(Str.split('_'))
+    ._(
+      A.map((s) =>
+        _(s)
+          ._(Str.split(''))
+          ._(A.lookup(0))
+          ._(O.getSomeOrElse(() => ''))
+          ._(Str.toUpperCase)
+          ._(
+            Str.append(
+              _(s)._(Str.split(''))._(A.slice(1))._(Str.fromArr(''))._v()
+            )
+          )
+          ._v()
+      )
+    )
+    ._(Str.fromArr(''))
+    ._v();
 }

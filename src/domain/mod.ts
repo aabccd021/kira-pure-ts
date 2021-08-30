@@ -1,6 +1,6 @@
 export type {
   ArrT as Arr,
-  DictEntryT as DEntryT,
+  DEntryT as DEntryT,
   DictT as Dict,
   EitherT as Either,
   IOT as IO,

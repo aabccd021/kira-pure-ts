@@ -23,6 +23,10 @@ export function reduce<A, TResult>(
   return (arr) => arr.reduce(reducer, initialAcc);
 }
 
+export function prepend<A>(newEl: NonNullable<A>): Fn<A, ArrT<A>> {
+  return (arr) => [newEl, ...arr];
+}
+
 export function append<A>(newEl: NonNullable<A>): Fn<A, ArrT<A>> {
   return (arr) => [...arr, newEl];
 }

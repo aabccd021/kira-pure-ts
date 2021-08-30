@@ -37,7 +37,7 @@ export * as Tuple4 from './tuple4';
 
 export type {
   ArrT,
-  DEntryT as DictEntryT,
+  DEntryT,
   DictT,
   EitherT,
   IOT,

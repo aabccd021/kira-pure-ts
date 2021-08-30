@@ -98,26 +98,7 @@ export function toTypeStr(typeDef: TypeDefT): TypeStrT {
       ._v(),
     imports: typeDef.imports,
     keys: _(typeDef.entries)._(D.keys)._(Str.fromArr(','))._v(),
-    name: _(typeDef.name)
-      ._(Str.split('_'))
-      ._(
-        A.map((s) =>
-          _(s)
-            ._(Str.split(''))
-            ._(A.lookup(0))
-            ._(O.getSomeOrElse(() => ''))
-            ._(Str.toUpperCase)
-            ._(
-              Str.append(
-                _(s)._(Str.split(''))._(A.slice(1))._(Str.fromArr(''))._v()
-              )
-            )
-            ._v()
-        )
-      )
-      ._(Str.fromArr(''))
-      ._(Str.append('T'))
-      ._v(),
+    name: _(typeDef.name)._(Str.snakeToPascal)._(Str.append('T'))._v(),
   });
 }
 
