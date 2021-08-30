@@ -8,6 +8,10 @@ export function createEmpty<A>(): ArrT<A> {
   return [];
 }
 
+export function create<A>(arr: readonly NonNullable<A>[]): ArrT<A> {
+  return arr;
+}
+
 export function fromAppended<A>(
   arr: ArrT<A>
 ): (newEl: NonNullable<A>) => ArrT<A> {
@@ -141,4 +145,8 @@ export function compactOption<A>(arr: ArrT<Option<NonNullable<A>>>): ArrT<A> {
       )
     )
     ._v();
+}
+
+export function flatten<A>(arr: ArrT<ArrT<A>>): ArrT<A> {
+  return arr.flat();
 }

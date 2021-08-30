@@ -1,23 +1,8 @@
 import { DEntry, DEntryT, Num } from '../domain/mod';
-import { Arr, ArrT } from '../domain/mod.g';
 import { DirEnt, DirEntT } from '../fs/mod';
 import { A, D, Dict, O, Str } from '../mod';
 import { _ } from '../ts/pipe';
 import { TypeDef, TypeDefT, TypeStr } from './domain/mod.g';
-
-function fileNameWithoutExtension<T>(entries: ArrT<DEntryT<T>>): ArrT<string> {
-  return _(entries)
-    ._(
-      A.map((entry) =>
-        _(entry.key)
-          ._(Str.split('.'))
-          ._(A.lookup(0))
-          ._(O.getSomeOrElse(() => ''))
-          ._v()
-      )
-    )
-    ._v();
-}
 
 function domainToStr(dir: Dict<DirEntT<TypeDefT>>): Dict<DirEntT<string>> {
   return _(dir)
@@ -76,11 +61,19 @@ function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
     ._(D.toEntries)
     ._(
       A.appendReduced((entries) =>
-        _(Arr.createEmpty<string>())
+        _(entries)
           ._(
-            A.extend(
+            A.map((entry) =>
+              _(entry.key)
+                ._(Str.split('.'))
+                ._(A.lookup(0))
+                ._(O.getSomeOrElse(() => ''))
+                ._v()
+            )
+          )
+          ._((entries) =>
+            A.create([
               _(entries)
-                ._(fileNameWithoutExtension)
                 ._(
                   A.map((name) =>
                     _('import {')
@@ -91,13 +84,8 @@ function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
                       ._v()
                   )
                 )
-                ._v()
-            )
-          )
-          ._(
-            A.extend(
+                ._v(),
               _(entries)
-                ._(fileNameWithoutExtension)
                 ._(
                   A.map((name) =>
                     _('export * as ')
@@ -108,29 +96,19 @@ function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
                       ._v()
                   )
                 )
-                ._v()
-            )
-          )
-          ._(
-            A.extend(
+                ._v(),
               _(entries)
-                ._(fileNameWithoutExtension)
                 ._(
                   A.map((name) =>
-                    _(name)
-                      ._(Str.snakeToPascal)
-                      ._(Str.snakeToPascal)
-                      ._((name) =>
-                        _(Str.snakeToPascal(name))._(Str.append('T,'))._v()
-                      )
-                      ._v()
+                    _(name)._(Str.snakeToPascal)._(Str.append('T,'))._v()
                   )
                 )
                 ._(A.prepend('export type {'))
                 ._(A.append('};'))
-                ._v()
-            )
+                ._v(),
+            ])
           )
+          ._(A.flatten)
           ._(Str.fromArr(''))
           ._(DirEnt.File.create)
           ._(DEntry.createWithKey('mod.g.ts'))
