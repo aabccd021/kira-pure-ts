@@ -27,7 +27,7 @@ export function readDir(path: string): TaskOption<Dict<DirEntEnum>> {
                 ._v()
             )
           )
-          ._(D.fromDEntryArr)
+          ._(D.fromEntries)
           ._v()
       )
     )

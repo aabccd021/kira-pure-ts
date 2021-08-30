@@ -1,4 +1,5 @@
 import { _ } from '../ts/mod';
+import { T, Task } from './mod';
 
 export type IOT<I> = () => I;
 
@@ -8,6 +9,10 @@ export function fromValue<I>(i: I): IOT<I> {
 
 export function invoke<I>(i: IOT<I>): I {
   return i();
+}
+
+export function toTask<I>(i: IOT<I>): Task<I> {
+  return T.fromValue(i());
 }
 
 export type Fn<I, T> = (i: IOT<I>) => T;

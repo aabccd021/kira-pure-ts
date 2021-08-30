@@ -1,8 +1,9 @@
 import { _, Str } from '../../mod';
 
-export * from './type_str.g'
+export * from './type_str.g';
 
 export type TypeStrT = {
+  readonly entries: string;
   readonly generics: string;
   readonly keys: string;
   readonly name: string;
@@ -14,6 +15,7 @@ export function toCreateFnStr(typeStr: TypeStrT): string {
     ._(Str.append('({'))
     ._(Str.append(typeStr.keys))
     ._(Str.append('}:{'))
+    ._(Str.append(typeStr.entries))
     ._(Str.append('}):'))
     ._(Str.append(typeStr.name))
     ._(Str.append(typeStr.generics))

@@ -17,7 +17,7 @@ function generateType(code: string): string {
 
 function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
   return _(dir)
-    ._(D.toDEntryArr)
+    ._(D.toEntries)
     ._(
       A.map((entry) =>
         _(entry.value)
@@ -52,7 +52,7 @@ function generateDomain(dir: Dict<DirEntT>): Dict<DirEntT> {
           ._v()
       )
     )
-    ._(D.fromDEntryArr)
+    ._(D.fromEntries)
     ._(D.compactOption)
     ._v();
 }

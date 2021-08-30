@@ -1,3 +1,4 @@
+import { DEntry, P2 } from '../../domain/mod';
 import { A, Arr, D, Dict, O, Str } from '../../mod';
 import { _ } from '../../ts/mod';
 import { TypeStr, TypeStrT } from './mod';
@@ -18,7 +19,37 @@ export function createFromStr(str: string): TypeDefT {
     ._(O.getSomeOrElse(() => ''))
     ._((nameStr) =>
       create({
-        entries: {},
+        entries: _(str)
+          ._(Str.replaceAll(' ', ''))
+          ._(Str.replaceAll('{', ''))
+          ._(Str.replaceAll('};', ''))
+          ._(Str.replaceAll('readonly', ''))
+          ._(Str.split('='))
+          ._(A.lookup(1))
+          ._(O.getSomeOrElse(() => ''))
+          ._(Str.split(';'))
+          ._(
+            A.map((entryStr) =>
+              _(entryStr)
+                ._(Str.split(':'))
+                ._((kvArr) =>
+                  P2.from(
+                    _(kvArr)._(A.lookup(0))._v(),
+                    _(kvArr)._(A.lookup(1))._v()
+                  )
+                )
+                ._(P2.swapOption)
+                ._(
+                  O.matchSome(
+                    P2.match((key, value) => DEntry.from({ key, value }))
+                  )
+                )
+                ._v()
+            )
+          )
+          ._(A.compactOption)
+          ._(D.fromEntries)
+          ._v(),
         generics: _(nameStr)
           ._(Str.replaceAll('>', ''))
           ._(Str.split('<'))
@@ -32,7 +63,7 @@ export function createFromStr(str: string): TypeDefT {
           ._v(),
         name: _(nameStr)
           ._(Str.split('<'))
-          ._(A.lookup(1))
+          ._(A.lookup(0))
           ._(O.getSomeOrElse(() => ''))
           ._v(),
       })
@@ -42,6 +73,19 @@ export function createFromStr(str: string): TypeDefT {
 
 export function toTypeStr(typeDef: TypeDefT): TypeStrT {
   return TypeStr.create({
+    entries: _(typeDef.entries)
+      ._(D.toEntries)
+      ._(
+        A.map((entry) =>
+          _(entry.key)
+            ._(Str.append(':'))
+            ._(Str.append(entry.value))
+            ._(Str.append(';'))
+            ._v()
+        )
+      )
+      ._(Str.fromArr(''))
+      ._v(),
     generics: _(typeDef.generics)
       ._(Str.fromArr(','))
       ._(Str.prepend('<'))

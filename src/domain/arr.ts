@@ -112,3 +112,20 @@ export function filter<A>(
 ): Fn<A, ArrT<A>> {
   return (arr) => arr.filter(f);
 }
+
+export function compactOption<A>(arr: ArrT<Option<NonNullable<A>>>): ArrT<A> {
+  return _(arr)
+    ._(
+      reduce(createEmpty<A>(), (acc, val) =>
+        _(val)
+          ._(
+            O.match({
+              None: () => acc,
+              Some: fromAppended(acc),
+            })
+          )
+          ._v()
+      )
+    )
+    ._v();
+}

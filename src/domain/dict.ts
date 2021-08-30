@@ -19,11 +19,11 @@ export interface DictT<D> {
   readonly [index: string]: NonNullable<D>;
 }
 
-export function fromDEntryArr<D>(entries: readonly DEntryT<D>[]): DictT<D> {
+export function fromEntries<D>(entries: readonly DEntryT<D>[]): DictT<D> {
   return Object.fromEntries(entries.map(({ key, value }) => [key, value]));
 }
 
-export function toDEntryArr<D>(d: DictT<D>): readonly DEntryT<D>[] {
+export function toEntries<D>(d: DictT<D>): Arr<DEntryT<D>> {
   return Object.entries(d).map(([key, value]) =>
     DictEntry.from({ key, value })
   );
@@ -33,12 +33,6 @@ export type Fn<D, T> = (dict: DictT<D>) => T;
 
 export function lookup<D>(key: string): Fn<D, Option<D>> {
   return (d) => O.fromNullable(d[key]);
-}
-
-export function mapEntries<V, T>(
-  f: (val: V, key: string, idx: number) => T
-): Fn<V, readonly T[]> {
-  return (d) => Object.entries(d).map(([key, val], idx) => f(val, key, idx));
 }
 
 export function keys<T>(d: DictT<T>): Arr<string> {
@@ -115,15 +109,16 @@ export function swapEither<L, R>(
 
 export function swapTask<D>(dt: DictT<Task<NonNullable<D>>>): Task<DictT<D>> {
   return _(dt)
+    ._(toEntries)
     ._(
-      mapEntries((el, key) =>
-        _(el)
-          ._(T.match(DEntry.withKey(key)))
+      A.map((entry) =>
+        _(entry.value)
+          ._(T.match(DEntry.withKey(entry.key)))
           ._v()
       )
     )
     ._(A.swapTask)
-    ._(T.match(fromDEntryArr))
+    ._(T.match(fromEntries))
     ._v();
 }
 
