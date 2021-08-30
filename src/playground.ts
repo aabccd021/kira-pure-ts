@@ -1,3 +1,3 @@
 import { generate } from './codegen/mod';
 
-generate('./src');
+generate('./src/tempura');

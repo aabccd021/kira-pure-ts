@@ -106,3 +106,9 @@ export function replace<A>(
 export function length<A>(arr: ArrT<A>): number {
   return arr.length;
 }
+
+export function filter<A>(
+  f: (value: A, idx: number) => boolean
+): Fn<A, ArrT<A>> {
+  return (arr) => arr.filter(f);
+}

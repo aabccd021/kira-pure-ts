@@ -73,3 +73,21 @@ export function match<TResult>({
     File: (file) => File(file.content),
   });
 }
+
+export function matchElse<TResult>({
+  Dir,
+  Etc,
+  File,
+  fallback,
+}: {
+  readonly Dir?: (child: Dict<DirEntT>) => TResult;
+  readonly Etc?: () => TResult;
+  readonly File?: (content: string) => TResult;
+  readonly fallback: () => TResult;
+}): Fn<TResult> {
+  return match({
+    Dir: Dir ?? fallback,
+    Etc: Etc ?? fallback,
+    File: File ?? fallback,
+  });
+}

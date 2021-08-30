@@ -2,17 +2,6 @@
 
 import { Arr } from './mod';
 
-// import { FromUnknownReport } from '../from_unknown';
-
-// export function fromUnknown(
-//   value: unknown,
-//   trace: string
-// ): Either<FromUnknownReport, string> {
-//   return typeof value === 'string'
-//     ? E.right(value)
-//     : E.left({ message: 'is not string', trace: [trace], value });
-// }
-
 export type StrT = string;
 
 export type CFn<T> = (t: T) => string;
@@ -33,4 +22,18 @@ export function prepend(prefix: string): Fn<string> {
 
 export function split(separator: string): Fn<Arr<string>> {
   return (s) => s.split(separator);
+}
+
+export function startsWith(
+  searchString: string,
+  position?: number
+): Fn<boolean> {
+  return (s) => s.startsWith(searchString, position);
+}
+
+export function replaceAll(
+  searchValue: string,
+  replaceValue: string
+): Fn<string> {
+  return (str) => str.replaceAll(searchValue, replaceValue);
 }
