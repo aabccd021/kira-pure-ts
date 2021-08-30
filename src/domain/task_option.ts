@@ -20,7 +20,7 @@ export function chain<O, T>(
 ): Fn<O, TaskOptionT<T>> {
   return T.chain(
     O.map({
-      None: () => T.fromValue(O.None.from()),
+      None: () => T.fromValue(O.None.create()),
       Some: f,
     })
   );

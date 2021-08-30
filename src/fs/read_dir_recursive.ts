@@ -22,7 +22,7 @@ export function readDirRecursive(path: string): TaskOption<Dict<DirEntT>> {
                     : entType === 'file'
                     ? _(dirEntPath)
                         ._(readFile)
-                        ._(TO.match(DirEnt.File.asDirEntFrom))
+                        ._(TO.match(DirEnt.File.createAsDirEnt))
                         ._v()
                     : TO.someFrom(DirEnt.Etc.asDirEntFrom())
                 )

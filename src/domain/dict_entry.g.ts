@@ -12,13 +12,13 @@ export function create<D>({
   return { key, value };
 }
 
-export function createFromKeyWithValue<D>(
+export function createWithValue<D>(
   value: NonNullable<D>
 ): (key: string) => DictEntryT<D> {
   return (key) => ({ key, value });
 }
 
-export function createFromValueWithKey<D>(
+export function createWithKey<D>(
   key: string
 ): (value: NonNullable<D>) => DictEntryT<D> {
   return (value) => ({ key, value });

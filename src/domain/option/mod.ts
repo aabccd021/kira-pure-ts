@@ -9,7 +9,7 @@ export function fromNullable<S>(
   s: NonNullable<S> | null | undefined
 ): OptionT<S> {
   // eslint-disable-next-line no-null/no-null
-  return s === null || s === undefined ? None.from() : Some.from(s);
+  return s === null || s === undefined ? None.create() : Some.from(s);
 }
 
 // eslint-disable-next-line
@@ -19,7 +19,7 @@ export function matchSome<S, T>(
   f: (s: S) => NonNullable<T>
 ): Fn<S, OptionT<T>> {
   return map<S, OptionT<T>>({
-    None: () => None.from(),
+    None: () => None.create(),
     Some: (s) => Some.from(f(s)),
   });
 }
@@ -30,7 +30,7 @@ export function chain<T, S>(f: (s: S) => OptionT<T>): Fn<S, OptionT<T>> {
       ._(matchSome(f))
       ._(
         map({
-          None: () => None.from(),
+          None: () => None.create(),
           Some: (v) => v,
         })
       )

@@ -27,6 +27,15 @@ export function append<A>(newEl: NonNullable<A>): Fn<A, ArrT<A>> {
   return (arr) => [...arr, newEl];
 }
 
+export function appendReduced<A>(
+  reducer: (arr: ArrT<A>) => NonNullable<A>
+): Fn<A, ArrT<A>> {
+  return (arr) =>
+    _(arr)
+      ._(append(reducer(arr)))
+      ._v();
+}
+
 export function lookup<A>(idx: number): Fn<A, Option<A>> {
   return (arr) => O.fromNullable(arr[idx]);
 }

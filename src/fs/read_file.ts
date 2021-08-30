@@ -10,6 +10,6 @@ export function readFile(path: string): TaskOption<string> {
     fs.promises
       .readFile(path, 'utf-8')
       .then((val) => O.Some.from(val))
-      .catch(() => O.None.from())
+      .catch(() => O.None.create())
   );
 }

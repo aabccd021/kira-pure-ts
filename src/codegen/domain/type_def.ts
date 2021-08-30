@@ -61,7 +61,11 @@ export function createFromStr(str: string, fileName: string): TypeDefT {
           ._(A.lookup(0))
           ._(O.getSomeOrElse(() => ''))
           ._v(),
-        name: fileName,
+        name: _(fileName)
+          ._(Str.split('.'))
+          ._(A.lookup(0))
+          ._(O.getSomeOrElse(() => ''))
+          ._v(),
       })
     )
     ._v();

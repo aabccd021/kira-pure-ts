@@ -7,7 +7,7 @@ export function swap<T>(ot: OptionTaskT<NonNullable<T>>): Task<Option<T>> {
   return _(ot)
     ._(
       O.map({
-        None: () => T.fromValue(O.None.from()),
+        None: () => T.fromValue(O.None.create()),
         Some: T.match(O.Some.asOptionFrom),
       })
     )

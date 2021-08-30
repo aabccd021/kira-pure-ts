@@ -12,7 +12,7 @@ export function readDir(path: string): TaskOption<Dict<DirEntEnum>> {
       fs.promises
         .readdir(path, { withFileTypes: true })
         .then((val) => O.Some.from(val))
-        .catch(() => O.None.from())
+        .catch(() => O.None.create())
     )
   )
     ._(
@@ -23,7 +23,7 @@ export function readDir(path: string): TaskOption<Dict<DirEntEnum>> {
               _<DirEntEnum>(
                 ent.isDirectory() ? 'directory' : ent.isFile() ? 'file' : 'etc'
               )
-                ._(DEntry.createFromValueWithKey(ent.name))
+                ._(DEntry.createWithKey(ent.name))
                 ._v()
             )
           )

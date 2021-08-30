@@ -1,9 +1,9 @@
 import { NoneT, OptionT } from './mod.g';
 
-export function from(): NoneT {
+export function create(): NoneT {
   return { _tag: 'None' };
 }
 
-export function asOptionFrom<S>(): OptionT<S> {
-  return from();
+export function createAsOption<S>(): OptionT<S> {
+  return create();
 }
