@@ -139,13 +139,7 @@ function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
     ._(D.toEntries)
     ._(A.mapOptional(dirToDef))
     ._(D.fromEntries)
-    ._(
-      D.mapValues(
-        DirEnt.matchSome({
-          File: typeDefToFileEnt,
-        })
-      )
-    )
+    ._(D.mapValues(DirEnt.matchSome({ File: typeDefToFileEnt })))
     ._(D.compactOption)
     ._(D.toEntries)
     ._(A.appendReduced(typesToMod))
