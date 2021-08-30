@@ -23,52 +23,54 @@ function domainToStr(dir: Dict<DirEntT<TypeDefT>>): Dict<DirEntT<string>> {
 }
 
 function generateDomain(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
-  return (
-    _(dir)
-      ._(D.toEntries)
-      ._(
-        A.map((entry) =>
-          _(entry.value)
-            ._(
-              DirEnt.matchSomeToOption<string, DEntryT<DirEntT<TypeDefT>>>({
-                File: (content) =>
-                  entry.key === 'mod.ts' ||
-                  _(entry.key)._(Str.split('.'))._(A.length)._(Num.lt(2))._v()
-                    ? O.None.createAsOption()
-                    : _(
-                        DEntry.create({
-                          key: _(entry.key)
-                            ._(Str.split('.'))
-                            ._(A.replace(1, Str.prepend('g.')))
-                            ._(Str.fromArr('.'))
-                            ._v(),
-                          value: _(content)
-                            ._(TypeDef.createFromStrWithFileName(entry.key))
-                            ._(DirEnt.File.create)
-                            ._v(),
-                        })
-                      )
-                        ._(O.Some.createAsOption)
-                        ._v(),
-              })
-            )
-            ._v()
-        )
+  return _(dir)
+    ._(D.toEntries)
+    ._(
+      A.map((entry) =>
+        _(entry.value)
+          ._(
+            DirEnt.matchSomeToOption<string, DEntryT<DirEntT<TypeDefT>>>({
+              File: (content) =>
+                entry.key === 'mod.ts' ||
+                _(entry.key)._(Str.split('.'))._(A.length)._(Num.lt(2))._v()
+                  ? O.None.createAsOption()
+                  : _(
+                      DEntry.create({
+                        key: _(entry.key)
+                          ._(Str.split('.'))
+                          ._(A.replace(1, Str.prepend('g.')))
+                          ._(Str.fromArr('.'))
+                          ._v(),
+                        value: _(content)
+                          ._(TypeDef.createWithFileName(entry.key))
+                          ._(DirEnt.File.create)
+                          ._v(),
+                      })
+                    )
+                      ._(O.Some.createAsOption)
+                      ._v(),
+            })
+          )
+          ._v()
       )
-      ._(A.compactOption)
-      ._(D.fromEntries)
-      // ._(
-      // A.appendReduced(
-      // (_) => _(TypeDef.create())._v()
-      // DEntry.create({
-      //   key: 'mod.g.ts',
-      //   value: DirEnt.File.create(''),
-      // })
-      // )
-      // )
-      ._(domainToStr)
-      ._v()
-  );
+    )
+    ._(A.compactOption)
+    ._(D.fromEntries)
+
+    ._(domainToStr)
+    ._(D.toEntries)
+    ._(
+      A.appendReduced((entries) =>
+        _(entries)
+          ._(A.map((entry) => entry.key))
+          ._(Str.fromArr(''))
+          ._(DirEnt.File.create)
+          ._(DEntry.createWithKey('mo.g.ts'))
+          ._v()
+      )
+    )
+    ._(D.fromEntries)
+    ._v();
 }
 
 export function generateDir(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {

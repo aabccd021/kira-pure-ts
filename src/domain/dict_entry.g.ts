@@ -1,6 +1,6 @@
 import { __ } from './dict_entry';
 
-export type DictEntryT<D> = __<D>;
+export type DEntryT<D> = __<D>;
 
 export function create<D>({
   key,
@@ -8,18 +8,18 @@ export function create<D>({
 }: {
   readonly key: string;
   readonly value: NonNullable<D>;
-}): DictEntryT<D> {
+}): DEntryT<D> {
   return { key, value };
 }
 
 export function createWithValue<D>(
   value: NonNullable<D>
-): (key: string) => DictEntryT<D> {
+): (key: string) => DEntryT<D> {
   return (key) => ({ key, value });
 }
 
 export function createWithKey<D>(
   key: string
-): (value: NonNullable<D>) => DictEntryT<D> {
+): (value: NonNullable<D>) => DEntryT<D> {
   return (value) => ({ key, value });
 }

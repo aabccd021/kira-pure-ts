@@ -2,11 +2,11 @@ import { DEntry, P2 } from '../../domain/mod';
 import { A, Arr, D, Dict, O, Str } from '../../mod';
 import { _ } from '../../ts/mod';
 import { TypeStr, TypeStrT } from './mod';
-import { create } from './type_def.g';
+import { create, TypeDefT } from './type_def.g';
 
 export * from './type_def.g';
 
-export type TypeDefT = {
+export type __ = {
   readonly entries: Dict<string>;
   readonly generics: Arr<string>;
   readonly imports: string;
@@ -121,7 +121,7 @@ export function toTypeStr(typeDef: TypeDefT): TypeStrT {
   });
 }
 
-export function createFromStrWithFileName(
+export function createWithFileName(
   fileName: string
 ): (str: string) => TypeDefT {
   return (str) => createFromStr(str, fileName);

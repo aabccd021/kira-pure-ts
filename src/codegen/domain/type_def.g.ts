@@ -1,5 +1,7 @@
 import { Arr, Dict } from '../../mod';
-import { TypeDefT } from './type_def';
+import { __ } from './type_def';
+
+export type TypeDefT = __;
 
 export function create({
   generics,
