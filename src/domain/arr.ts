@@ -1,6 +1,7 @@
 import { Option } from '../mod';
 import { _ } from '../ts/mod';
 import { E, Either, O, Task } from './mod';
+import { ArrIteratorT } from './mod.g';
 
 export type ArrT<A> = readonly NonNullable<A>[];
 
@@ -49,9 +50,15 @@ export function lookup<A>(idx: number): Fn<A, Option<A>> {
 }
 
 export function map<A, TResult>(
-  f: (a: A, index: number, arr: ArrT<A>) => NonNullable<TResult>
+  f: (i: A) => NonNullable<TResult>
 ): Fn<A, ArrT<TResult>> {
   return (arr) => arr.map(f);
+}
+
+export function mapDetail<A, TResult>(
+  f: (i: ArrIteratorT<A>) => NonNullable<TResult>
+): Fn<A, ArrT<TResult>> {
+  return (arr) => arr.map((item, idx, arr) => f({ arr, idx, item }));
 }
 
 export function swapTask<T>(tasks: ArrT<Task<NonNullable<T>>>): Task<ArrT<T>> {
@@ -145,6 +152,12 @@ export function compactOption<A>(arr: ArrT<Option<NonNullable<A>>>): ArrT<A> {
       )
     )
     ._v();
+}
+
+export function mapOptionalDetail<A, TResult>(
+  f: (a: ArrIteratorT<A>) => Option<NonNullable<TResult>>
+): Fn<A, ArrT<TResult>> {
+  return (arr) => _(arr)._(mapDetail(f))._(compactOption)._v();
 }
 
 export function mapOptional<A, TResult>(

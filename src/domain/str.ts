@@ -1,5 +1,5 @@
-import { _ } from '../mod';
-import { A, Arr, O, Str } from './mod';
+import { _, flow as f } from '../mod';
+import { A, Arr, O, Option } from './mod';
 
 export type StrT = string;
 
@@ -49,22 +49,27 @@ export function replaceAll(
   return (str) => str.replace(new RegExp(searchValue, 'g'), replaceValue);
 }
 
+export function slice(start?: number, end?: number): Fn<string> {
+  return (str) => str.slice(start, end);
+}
+
+export function lookup(idx: number): Fn<Option<string>> {
+  return f(split(''))._(A.lookup(idx))._v();
+}
+
+// export function flow<T, TRes>(): (t: T) => TRes {
+//   return (t) => _(t)._()._v()
+// }
+
 export function capitalize(str: string): string {
   return _(str)
-    ._(Str.split(''))
-    ._(A.lookup(0))
+    ._(lookup(0))
     ._(O.getSomeOrElse(() => ''))
-    ._(Str.toUpperCase)
-    ._(
-      Str.append(_(str)._(Str.split(''))._(A.slice(1))._(Str.fromArr(''))._v())
-    )
+    ._(toUpperCase)
+    ._(append(slice(1)(str)))
     ._v();
 }
 
 export function snakeToPascal(snake: string): string {
-  return _(snake)
-    ._(Str.split('_'))
-    ._(A.map(capitalize))
-    ._(Str.fromArr(''))
-    ._v();
+  return _(snake)._(split('_'))._(A.map(capitalize))._(fromArr(''))._v();
 }

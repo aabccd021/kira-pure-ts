@@ -9,3 +9,19 @@ export function create<D>({
 }): DictEntryT<D> {
   return { key, value };
 }
+
+export function createFromKey<D>({
+  value,
+}: {
+  readonly value: NonNullable<D>;
+}): (key: string) => DictEntryT<D> {
+  return (key) => create({ key, value });
+}
+
+export function createFromValue<D>({
+  key,
+}: {
+  readonly key: string;
+}): (value: NonNullable<D>) => DictEntryT<D> {
+  return (value) => create({ key, value });
+}

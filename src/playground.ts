@@ -1,8 +1,12 @@
 import { exec } from './child_process/exec';
 import { generate } from './codegen/mod';
 
-console.log('generate');
-generate('./tempura');
-console.log('lint');
-exec('yarn lint --fix');
-console.log('done');
+async function main(): Promise<void> {
+  console.log('generate');
+  await generate('./tempura');
+  console.log('lint');
+  exec('yarn eslint --fix tempura')();
+  console.log('done');
+}
+
+main();

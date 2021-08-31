@@ -105,7 +105,7 @@ export function swapEither<L, R>(
     ._(
       reduce(E.Right.asEitherFrom<L, DictT<R>>({}), (acc, eVal, key) =>
         _(P2.from(acc, eVal))
-          ._(P2.swapEither)
+          ._(P2.swapEitherRight)
           ._(E.match2((acc, val) => ({ ...acc, [key]: val })))
           ._v()
       )

@@ -28,7 +28,7 @@ export function swapEither<L, A, B, C>([a, ...r]: Tuple3T<
     ._(
       E.chain((a) =>
         _(P2.from(...r))
-          ._(P2.swapEither)
+          ._(P2.swapEitherRight)
           ._(E.mapRight((r) => from(a, ...r)))
           ._v()
       )

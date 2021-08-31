@@ -39,6 +39,21 @@ export function chain<L, R, RResult>(
       ._v();
 }
 
+export function chainLeft<L, R, LResult>(
+  f: (l: L) => EitherT<LResult, R>
+): Fn<L, R, EitherT<LResult, R>> {
+  return (e) =>
+    _(e)
+      ._(mapLeft(f))
+      ._(
+        map(
+          (l) => l.left,
+          (r) => r
+        )
+      )
+      ._v();
+}
+
 export function match2<L, A, B, T>(
   f: (a: A, b: B) => T
 ): Fn<L, Tuple2<A, B>, EitherT<L, T>> {

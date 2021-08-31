@@ -1,5 +1,6 @@
 export type {
   ArrT as Arr,
+  ArrIteratorT,
   DictEntryT as DEntryT,
   DictT as Dict,
   EitherT as Either,
@@ -17,6 +18,7 @@ export type {
 } from './mod.g';
 export {
   Arr as A,
+  ArrIterator,
   Dict as D,
   DictEntry as DEntry,
   Either as E,

@@ -1,4 +1,5 @@
 import { ArrT } from './arr';
+import { ArrIteratorT } from './arr_iterator';
 import { DictT } from './dict';
 import { DictEntryT } from './dict_entry';
 import { EitherT } from './either/mod';
@@ -17,6 +18,7 @@ import { Tuple3T } from './tuple3';
 import { Tuple4T } from './tuple4';
 
 export * as Arr from './arr';
+export * as ArrIterator from './arr_iterator';
 export * as Dict from './dict';
 export * as DictEntry from './dict_entry';
 export * as Either from './either/mod';
@@ -36,6 +38,7 @@ export * as Tuple3 from './tuple3';
 export * as Tuple4 from './tuple4';
 
 export type {
+  ArrIteratorT,
   ArrT,
   DictEntryT,
   DictT,

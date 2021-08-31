@@ -6,7 +6,7 @@ import { TypeDef, TypeDefT, TypeStr } from './domain/mod.g';
 
 function typeDefToFileEnt(typeDef: TypeDefT): DirEnt.FileT<string> {
   return _(typeDef)
-    ._(TypeStr.fromTypeDef)
+    ._(TypeStr.createFromTypeDef)
     ._(TypeStr.toCompiledStr)
     ._(DirEnt.File.create)
     ._v();
@@ -58,7 +58,7 @@ function typeNamesToModContent(
   names: Arr<string>
 ): DEntryT<DirEnt.FileT<string>> {
   return _(A.createEmpty<string>())
-    ._(A.extend(_(names)._(A.map(typeNameToModuleImport))._v()))
+    ._(A.extend(A.map(typeNameToModuleImport)(names)))
     ._(A.extend(_(names)._(A.map(typeNameToModuleExport))._v()))
     ._(A.extend(typeNamesToExport(names)))
     ._(Str.fromArr(''))
@@ -164,5 +164,5 @@ function dirToDef2(
 }
 
 export function generateDir(dir: Dict<DirEntT<string>>): Dict<DirEntT<string>> {
-  return _(dir)._(D.mapValuesOptional(dirToDef2))._v();
+  return D.mapValuesOptional(dirToDef2)(dir);
 }

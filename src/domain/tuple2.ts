@@ -15,30 +15,45 @@ export function fromPrepended<A, B>(f: (b: B) => A): (b: B) => Tuple2T<A, B> {
   return (b) => from(f(b), b);
 }
 
-export function swapEither<L, A, B>([a, r]: Tuple2T<
-  Either<L, A>,
-  Either<L, B>
->): Either<L, Tuple2T<A, B>> {
-  return _(a)
-    ._(
-      E.chain((a) =>
-        _(r)
-          ._(E.mapRight((r) => from(a, r)))
-          ._v()
-      )
-    )
-    ._v();
-}
-
-export function swapOption<A, B>([a, ...rest]: Tuple2T<
+export function swapOption<A, B>([a, rest]: Tuple2T<
   Option<A>,
   Option<B>
 >): Option<Tuple2T<A, B>> {
   return _(a)
     ._(
       O.chain((prev) =>
-        _(...rest)
+        _(rest)
           ._(O.matchSome(fromPrepended(() => prev)))
+          ._v()
+      )
+    )
+    ._v();
+}
+
+export function swapEitherRight<L, A, B>([a, r]: Tuple2T<
+  Either<L, A>,
+  Either<L, B>
+>): Either<L, Tuple2T<A, B>> {
+  return _(a)
+    ._(
+      E.chain((prev) =>
+        _(r)
+          ._(E.mapRight(fromPrepended(() => prev)))
+          ._v()
+      )
+    )
+    ._v();
+}
+
+export function swapEitherLeft<A, B, R>([a, r]: Tuple2T<
+  Either<A, R>,
+  Either<B, R>
+>): Either<Tuple2T<A, B>, R> {
+  return _(a)
+    ._(
+      E.chainLeft((prev) =>
+        _(r)
+          ._(E.mapLeft(fromPrepended(() => prev)))
           ._v()
       )
     )
